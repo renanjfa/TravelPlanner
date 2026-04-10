@@ -1,2 +1,2 @@
 # TravelPlanner
-Site de Viagem aí
+Aplicação de Geração Automática Personalizada de Roteiros de Viagem
