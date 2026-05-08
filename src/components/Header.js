@@ -1,16 +1,9 @@
 import { Component } from 'react';
-
-import {
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 class Header extends Component {
 
   render() {
-
     return (
 
       <View style={styles.header}>
@@ -20,7 +13,7 @@ class Header extends Component {
         </Text>
 
         <TouchableOpacity style={styles.userButton}>
-          <Text>Renan Jusan</Text>
+          <Text style={styles.username}>Renan Jusan</Text>
         </TouchableOpacity>
 
       </View>
@@ -28,13 +21,12 @@ class Header extends Component {
     );
   }
 }
-
 export default Header;
 
 const styles = StyleSheet.create({
 
   header: {
-    height: 80,
+    height: 60,
     backgroundColor: '#D79A5B',
 
     flexDirection: 'row',
@@ -50,6 +42,12 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
 
+  username: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#FFFFFF'
+  },
+
   userButton: {
     borderWidth: 2,
     borderColor: '#FFFFFF',
@@ -59,5 +57,4 @@ const styles = StyleSheet.create({
 
     borderRadius: 12,
   }
-
 });
