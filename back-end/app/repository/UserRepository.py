@@ -1,0 +1,24 @@
+from sqlalchemy.orm import Session
+from app.models import models
+
+class UserRepository:
+    @staticmethod
+    def buscar_por_email(db: Session, email: str):
+        return db.query(models.User).filter(models.User.email == email).first()
+
+    @staticmethod
+    def salvar_usuario(db: Session, usuario_data, senha_encriptada: str):
+        novo_usuario = models.User(
+            nome=usuario_data.nome,
+            sobrenome=usuario_data.sobrenome,
+            email=usuario_data.email,
+            senha=senha_encriptada,
+            data_nascimento=usuario_data.data_nascimento,
+            idade=usuario_data.idade,
+            nacionalidade=usuario_data.nacionalidade,
+            telefone=usuario_data.telefone
+        )
+        db.add(novo_usuario)
+        db.commit()
+        db.refresh(novo_usuario)
+        return novo_usuario
