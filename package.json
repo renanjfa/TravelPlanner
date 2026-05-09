@@ -1,6 +1,6 @@
 {
   "name": "travelplanner",
-  "main": "index.js",
+  "main": "index",
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
