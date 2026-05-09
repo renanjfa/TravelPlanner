@@ -1,7 +1,7 @@
-# app/services/ai_service.py
 import os
 import google.generativeai as genai
 from dotenv import load_dotenv
+from app.schema.PlanoSchema import CriarViagemRequest # Importando o Mega Schema
 
 # Carrega as variáveis do .env
 load_dotenv()
@@ -9,30 +9,46 @@ load_dotenv()
 # Configura a biblioteca do Google com a sua chave
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-def gerar_roteiro_viagem(formulario):
+def gerar_roteiro_viagem(request: CriarViagemRequest):
     """
-    Recebe um objeto Formulario e pede para o Gemini gerar o plano de viagem.
+    Recebe o Mega Schema (CriarViagemRequest) e pede para o Gemini gerar o plano de viagem.
     """
-    # Escolhemos o modelo 'flash' pois ele é extremamente rápido e barato/gratuito
-    # Se o 1.5 falhar, use este fallback seguro:
+    # Usando o modelo flash (Ajustei para 1.5-flash, que é a versão estável atual mais rápida e econômica)
     model = genai.GenerativeModel('gemini-2.5-flash')
     
-    # Montamos o "Prompt" (A instrução que a IA vai ler)
-    # Utilizamos os campos exatos que você definiu na modelagem do banco de dados
+    # Formata as datas para o padrão brasileiro (DD/MM/AAAA) para a IA entender melhor
+    data_inicio_formatada = request.data_inicio.strftime('%d/%m/%Y')
+    data_fim_formatada = request.data_fim.strftime('%d/%m/%Y')
+    
+    # Montamos o "Prompt" atualizado com todas as informações do Mega Schema
     prompt = f"""
-    Você é um agente de viagens experiente. Crie um roteiro de viagem detalhado com base nas seguintes preferências do cliente:
+    Você é um agente de viagens experiente e especialista em montar roteiros personalizados. 
+    Crie um roteiro de viagem detalhado para a viagem chamada "{request.nome_viagem}", com base nas seguintes informações:
     
-    - Adultos: {formulario.qtd_adultos}
-    - Crianças: {formulario.qtd_criancas}
-    - Orçamento: R$ {formulario.orcamento}
-    - Principal Interesse: {formulario.interesse}
-    - Ritmo da Viagem: {formulario.ritmo_viagem}
-    - Prioridade: {formulario.prioridade}
-    - Tipo de Hospedagem: {formulario.tipo_hospedagem}
-    - Período do Dia preferido para atividades: {formulario.periodo_dia}
-    - Informações adicionais (Descrição): {formulario.descricao}
+    **DESTINO E DATAS:**
+    - País: {request.pais}
+    - Cidade: {request.cidade}
+    - Data de Início: {data_inicio_formatada}
+    - Data de Fim: {data_fim_formatada}
     
-    Por favor, monte um plano de viagem criativo, sugerindo cidades (destinos), e separando as atividades dia a dia.
+    **PERFIL DOS VIAJANTES:**
+    - Adultos: {request.qtd_adultos}
+    - Crianças: {request.qtd_criancas}
+    - Orçamento Estimado: R$ {request.orcamento}
+    
+    **PREFERÊNCIAS DA VIAGEM:**
+    - Principal Interesse: {request.interesse}
+    - Ritmo da Viagem: {request.ritmo_viagem}
+    - Prioridade: {request.prioridade}
+    - Tipo de Hospedagem: {request.tipo_hospedagem}
+    - Período do Dia preferido para atividades: {request.periodo_dia}
+    - Informações Adicionais: {request.descricao_viagem if request.descricao_viagem else "Nenhuma"}
+    
+    **INSTRUÇÕES DE FORMATAÇÃO E REGRAS:**
+    1. Monte um plano de viagem focado especificamente na cidade de {request.cidade} ({request.pais}).
+    2. Estruture a resposta utilizando formatação Markdown (ex: ## Dia 1, ### Manhã, etc.).
+    3. Separe as atividades dia a dia, cobrindo exatamente o período entre a Data de Início e a Data de Fim.
+    4. Leve estritamente em consideração o orçamento disponível e a presença de crianças (se houver) para sugerir os passeios.
     """
     
     # Chamamos a IA para gerar o conteúdo
