@@ -15,22 +15,22 @@ class ProfileInfo extends Component {
             
                 <View style={styles.profileTextInputs}>
 
-                    <View>
+                    <View style={styles.gapTextInput}>
                         <Text>Nome:</Text>
                         <TextInput style={styles.input} placeholder="Renan" placeholderTextColor={'#ae9898'}></TextInput>
                     </View>
 
-                    <View>
+                    <View style={styles.gapTextInput}>
                         <Text>Sobrenome:</Text>
                         <TextInput style={styles.input} placeholder="Jusan" placeholderTextColor={'#ae9898'}></TextInput>
                     </View>
 
-                    <View>
+                    <View style={styles.gapTextInput}>
                         <Text>Email:</Text>
                         <TextInput style={styles.input} placeholder="arrascaeta@uel.br" placeholderTextColor={'#ae9898'}></TextInput>
                     </View>
 
-                    <View>
+                    <View style={styles.gapTextInput}>
                         <Text>Senha:</Text>
                         <TextInput style={styles.input} secureTextEntry={true}></TextInput>
                     </View>
@@ -93,5 +93,9 @@ const styles = StyleSheet.create({
     submitButtonText: {
         color: '#dfd813',
         fontWeight: '500'
-    }
+    },
+
+    gapTextInput: {
+        gap:5
+    },
 });
