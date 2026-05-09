@@ -13,7 +13,6 @@ export default function LandingScreen() {
             source={require('../../assets/images/photo_background.png')} 
             style={styles.background}
             resizeMode="cover"
-  // Esta linha abaixo força a imagem a se alinhar pela base
             imageStyle={{ justifyContent: 'flex-end', alignItems: 'center' }}
         >
             <View style={styles.container}>
@@ -48,21 +47,17 @@ const styles = StyleSheet.create({
         paddingHorizontal: '5%',
         flexDirection: 'column',
         paddingVertical: 50,
-        justifyContent: 'space-between', // Joga o título para cima e o texto para baixo
+        justifyContent: 'space-between', 
     },
   
     textContainer: {
         width: '30%',
-        //backgroundColor: 'red',
-        //height: '65%',
         paddingBottom: 100,
         
     },
 
     title: {
         width: '50%',
-        //height: '35%',
-        //backgroundColor: 'green',
         alignItems: 'flex-start',
         marginTop: -15,
     },
@@ -77,7 +72,7 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontSize: 10,
         fontWeight: '500',
-        letterSpacing: 2, // Espaçamento entre letras para o estilo "Clean"
+        letterSpacing: 2,
     },
 
     subtituloContainer: {
@@ -92,11 +87,11 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontSize: 35,
         fontWeight: '700',
-        lineHeight: 50, // Ajuste para a frase não ficar "apertada"
+        lineHeight: 50, 
     },
 
     entryButton: {
-        backgroundColor: '#bd752d', // Tom de marrom do seu Figma
+        backgroundColor: '#c97726', 
         width: 160,
         height: 45,
         borderRadius: 8,
