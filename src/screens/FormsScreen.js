@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import FormsNovaViagem from "../components/FormsNovaViagem";
+import FormsQuestionario from "../components/FormsQuestionario";
 import Header from "../components/Header";
 
 const FormsScreen = () => {
@@ -15,16 +16,9 @@ const FormsScreen = () => {
 
                 <FormsNovaViagem/>
 
-                <View style={{ 
-                    height: '110%', 
-                    width: 1, 
-                    backgroundColor: '#ccc', 
-                    marginHorizontal: 70 
-                }} />
-                {/* Questionario */}
-                <View>
-                    <Text>QUESTIONARIO</Text>
-                </View>
+                <View style={styles.line} />
+
+                <FormsQuestionario/>
 
             </View>
 
@@ -51,10 +45,10 @@ const styles = StyleSheet.create({
     },
 
     line: {
-    height: '100%', // ou um valor fixo como 50
-    width: 1, // Espessura da linha
-    backgroundColor: '#949393', // Cor da linha
-    opacity: 1
+        height: '110%', 
+        width: 1, 
+        backgroundColor: '#ccc', 
+        marginHorizontal: 70 
   },
     
 });

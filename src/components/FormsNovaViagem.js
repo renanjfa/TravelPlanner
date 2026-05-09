@@ -15,17 +15,17 @@ const FormsNovaViagem = () => {
 
                 <View style={styles.gap}>
                     
-                    <View>
+                    <View style={styles.gapTextInput}>
                         <Text>Nome da Viagem:</Text>
                         <TextInput style={styles.textInput} placeholder="Férias em Bali" placeholderTextColor={'#ae9898'}></TextInput>
                     </View>
 
-                    <View>
+                    <View style={styles.gapTextInput}>
                         <Text>País:</Text>
                         <TextInput style={styles.textInput} placeholder="Indonésia" placeholderTextColor={'#ae9898'}></TextInput>
                     </View>
 
-                    <View>
+                    <View style={styles.gapTextInput}>
                         <Text>Cidade:</Text>
                         <TextInput style={styles.textInput} placeholder="Bali" placeholderTextColor={'#ae9898'}></TextInput>
                     </View>
@@ -47,19 +47,19 @@ const FormsNovaViagem = () => {
                 </View>
 
                <View style={styles.gap}>
-                    <View>
+                    <View style={styles.gapTextInput}>
                         <Text>Orçamento:</Text>
                         <TextInput style={styles.textInput} placeholder="R$5000" placeholderTextColor={'#ae9898'}></TextInput>
                     </View>
 
-                    <View>
+                    <View style={styles.gapTextInput}>
                         <Text>Quantidade Adultos:</Text>
-                        <TextInput style={styles.textInput} placeholder="3" placeholderTextColor={'#ae9898'}></TextInput>
+                        <TextInput style={styles.textInput} placeholder="3" placeholderTextColor={'#ae9898'} keyboardType='numeric'></TextInput>
                     </View>
 
-                    <View>
+                    <View style={styles.gapTextInput}>
                         <Text>Quantidade Crianças:</Text>
-                        <TextInput style={styles.textInput} placeholder="2" placeholderTextColor={'#ae9898'}></TextInput>
+                        <TextInput style={styles.textInput} placeholder="2" placeholderTextColor={'#ae9898'} keyboardType='numeric'></TextInput>
                     </View>
 
                     <Text>Data de Volta:</Text>
@@ -106,10 +106,16 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 3,
         paddingLeft: 10,
-        width: 220
+        width: 220,
+        borderRadius: 3,
+        borderColor: '#929292'
     },
 
     gap: {
         gap: 20
+    },
+
+    gapTextInput: {
+        gap:4
     },
 });
