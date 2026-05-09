@@ -27,4 +27,4 @@ class UsuarioResponse(BaseModel):
     email: EmailStr
 
     class Config:
-        from_attributes = True # Permite que o Pydantic leia diretamente do SQLAlchemy
+        from_attributes = True

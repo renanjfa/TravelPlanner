@@ -1,0 +1,16 @@
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+from typing import List
+from app.database import get_db
+from app.security import obter_usuario_atual
+from app.schema.PlanoSchema import PlanoViagemResponse
+from app.controller.PlanoController import PlanoController
+
+router = APIRouter(prefix="/viagens", tags=["Viagens"])
+
+@router.get("/minhas-viagens", response_model=List[PlanoViagemResponse])
+def listar_minhas_viagens(
+    usuario_id: int = Depends(obter_usuario_atual),
+    db: Session = Depends(get_db)
+):
+    return PlanoController.buscar_minhas_viagens(db, usuario_id)
