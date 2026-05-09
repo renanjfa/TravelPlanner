@@ -8,7 +8,7 @@ import MinhasViagens from '../components/MinhasViagens';
 import UserCard from '../components/UserCard';
 
 
-class MyProfileScreen extends Component {
+class MyTripsScreen extends Component {
 
     render() {
         return (
@@ -34,7 +34,7 @@ class MyProfileScreen extends Component {
         );
     }
 }
-export default MyProfileScreen;
+export default MyTripsScreen;
 
 
 const styles = StyleSheet.create({
