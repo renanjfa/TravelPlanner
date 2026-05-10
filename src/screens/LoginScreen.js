@@ -61,25 +61,25 @@ export default class LoginScreen extends Component{
                         <View style={styles.titleCard}>
                             <Text style={styles.loginText}>Login</Text>
                         </View>
-                        <View style={styles.emailCard}>
-                            <View style={styles.email}>
-                                <Text style={styles.emailText}>Email:</Text>
+                        <View style={styles.inputCard}>
+                            <View style={styles.inputTitle}>
+                                <Text style={styles.inputText}>Email:</Text>
                             </View>
-                            <View style={styles.inputEmail}>
+                            <View style={styles.input}>
                                 <Input 
-                                    inputEmail={inputEmail} 
-                                    inputChangeEmail={ this.inputChangeEmail }
+                                    inputValue={inputEmail} 
+                                    inputChange={ this.inputChangeEmail }
                                 />
                             </View>
                         </View>
-                        <View style={styles.senhaCard}>
-                            <View style={styles.senha}>
-                                <Text style={styles.senhaText}>Senha:</Text>
+                        <View style={styles.inputCard}>
+                            <View style={styles.inputTitle}>
+                                <Text style={styles.inputText}>Senha:</Text>
                             </View>
-                            <View style={styles.inputSenha}>
+                            <View style={styles.input}>
                                 <Input 
-                                    inputSenha={inputSenha} 
-                                    inputChangeSenha={ this.inputChangeSenha }
+                                    inputValue={inputSenha} 
+                                    inputChange={ this.inputChangeSenha }
                                     secureTextEntry={true}
                                 />
                             </View>
@@ -150,42 +150,23 @@ const styles = StyleSheet.create({
         color: '#000',
     },
 
-    emailCard: {
+    inputCard: {
         width: '100%',
         marginBottom: 20,
     },
 
-    email: {
+    inputTitle: {
         marginBottom: 5,
         marginLeft: 20,
     },
 
-    emailText: {
+    inputText: {
         fontSize: 14,
         fontWeight: 'bold',
         color: '#000',
     },
 
-    inputEmail: {
-        width: '100%',
-    },
-
-    senhaCard: {
-        width: '100%',
-    },
-     
-    senha: {
-        marginBottom: 5,
-        marginLeft: 20,
-    },
-
-    senhaText: {
-        fontSize: 14,
-        fontWeight: 'bold',
-        color: '#000',
-    },
-
-    inputSenha: {
+    input: {
         width: '100%',
     },
 
