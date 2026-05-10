@@ -45,6 +45,7 @@ class PlanoViagem(Base):
     descricao = Column(Text)
     plano_detalhado = Column(Text)
     concluido = Column(Boolean, default=False)
+    imagem_url = Column(String(255), nullable=True)
 
     # Relacionamentos
     usuario = relationship("User", back_populates="planos")

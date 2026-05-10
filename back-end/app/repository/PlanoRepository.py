@@ -19,7 +19,8 @@ def salvar_plano(
         data_fim=request.data_fim,
         descricao=request.descricao_viagem,
         plano_detalhado=texto_ia,
-        concluido=False
+        concluido=False,
+        imagem_url=request.imagem_url
     )
     
     db.add(novo_plano)
