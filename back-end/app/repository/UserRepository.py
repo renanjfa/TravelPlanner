@@ -22,3 +22,7 @@ class UserRepository:
         db.commit()
         db.refresh(novo_usuario)
         return novo_usuario
+    
+    @staticmethod
+    def buscar_por_id(db: Session, usuario_id: int):
+        return db.query(models.User).filter(models.User.id == usuario_id).first()
