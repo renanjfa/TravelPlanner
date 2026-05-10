@@ -42,3 +42,16 @@ class PlanoService:
             return None, "acesso_negado"
             
         return plano, None
+    
+    @staticmethod
+    def deletar_plano_seguro(db: Session, plano_id: int, usuario_id: int):
+        plano = PlanoRepository.buscar_por_id(db, plano_id)
+    
+        if not plano:
+            return False, "nao_encontrado"
+
+        if plano.usuario_id != usuario_id:
+            return False, "acesso_negado"
+
+        PlanoRepository.deletar(db, plano)
+        return True, None

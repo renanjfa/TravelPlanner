@@ -30,7 +30,6 @@ class PlanoController:
             )
         
     def obter_detalhes(db: Session, plano_id: int, usuario_id: int):
-        # Manda o Service processar as regras
         plano, erro = PlanoService.obter_detalhes_seguros(db, plano_id, usuario_id)
       
         if erro == "nao_encontrado":
@@ -40,3 +39,14 @@ class PlanoController:
             raise HTTPException(status_code=403, detail="Você não tem permissão para ver esta viagem")
             
         return plano
+    
+    def excluir_viagem(db: Session, plano_id: int, usuario_id: int):
+        sucesso, erro = PlanoService.deletar_plano_seguro(db, plano_id, usuario_id)
+        
+        if erro == "nao_encontrado":
+            raise HTTPException(status_code=404, detail="Plano de viagem não encontrado")
+        
+        if erro == "acesso_negado":
+            raise HTTPException(status_code=403, detail="Você não tem permissão para excluir esta viagem")
+            
+        return {"mensagem": "Viagem excluída com sucesso"}

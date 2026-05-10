@@ -50,3 +50,8 @@ def listar_por_usuario(db: Session, usuario_id: int):
 @staticmethod
 def buscar_por_id(db: Session, plano_id: int):
         return db.query(PlanoViagem).filter(PlanoViagem.id == plano_id).first()
+
+@staticmethod
+def deletar(db: Session, plano: PlanoViagem):
+        db.delete(plano)
+        db.commit()

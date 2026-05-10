@@ -26,9 +26,6 @@ def criar_token_acesso(data: dict):
     return encoded_jwt
 
 def obter_usuario_atual(token: str = Depends(oauth2_scheme)) -> int:
-    """
-    Descodifica o Token JWT e extrai o ID do utilizador logado.
-    """
     credenciais_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Não foi possível validar as credenciais",
@@ -36,18 +33,14 @@ def obter_usuario_atual(token: str = Depends(oauth2_scheme)) -> int:
     )
     
     try:
-        # Descodifica o token usando a chave secreta e o algoritmo
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        
-        # Extrai o "subject" (sub) do token, que geralmente guarda o ID
+
         usuario_id: str = payload.get("sub")
         
         if usuario_id is None:
             raise credenciais_exception
-            
-        # Como o ID no PostgreSQL é um Integer, convertemos de volta para int
+
         return int(usuario_id)
         
     except JWTError:
-        # Se o token estiver expirado ou for inválido, cai aqui
         raise credenciais_exception

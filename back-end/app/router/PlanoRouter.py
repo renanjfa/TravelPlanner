@@ -30,3 +30,11 @@ def get_detalhes_viagem(
     db: Session = Depends(get_db)
 ):
     return PlanoController.obter_detalhes(db, plano_id, usuario_id)
+
+@router.delete("/minhas-viagens/deletar/{plano_id}")
+def excluir_viagem(
+    plano_id: int,
+    usuario_id: int = Depends(obter_usuario_atual),
+    db: Session = Depends(get_db)
+):
+    return PlanoController.excluir_viagem(db, plano_id, usuario_id)
