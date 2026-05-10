@@ -15,7 +15,7 @@ class PlanoController:
                 detail=f"Erro ao buscar viagens: {str(e)}"
             )
         
-
+    @staticmethod
     def processar_nova_viagem(request: CriarViagemRequest, usuario_id: int, db: Session):
         try:
             viagem_gerada = PlanoService.criar_viagem(db, request, usuario_id)
@@ -28,7 +28,8 @@ class PlanoController:
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"Erro ao processar a viagem: {str(e)}"
             )
-        
+    
+    @staticmethod
     def obter_detalhes(db: Session, plano_id: int, usuario_id: int):
         plano, erro = PlanoService.obter_detalhes_seguros(db, plano_id, usuario_id)
       
@@ -40,6 +41,7 @@ class PlanoController:
             
         return plano
     
+    @staticmethod
     def excluir_viagem(db: Session, plano_id: int, usuario_id: int):
         sucesso, erro = PlanoService.deletar_plano_seguro(db, plano_id, usuario_id)
         
@@ -50,3 +52,15 @@ class PlanoController:
             raise HTTPException(status_code=403, detail="Você não tem permissão para excluir esta viagem")
             
         return {"mensagem": "Viagem excluída com sucesso"}
+    
+    @staticmethod
+    def alterar_status_viagem(db: Session, plano_id: int, usuario_id: int, status_concluido: bool):
+        plano, erro = PlanoService.atualizar_status_seguro(db, plano_id, usuario_id, status_concluido)
+        
+        if erro == "nao_encontrado":
+            raise HTTPException(status_code=404, detail="Plano de viagem não encontrado")
+        
+        if erro == "acesso_negado":
+            raise HTTPException(status_code=403, detail="Você não tem permissão para alterar esta viagem")
+            
+        return plano

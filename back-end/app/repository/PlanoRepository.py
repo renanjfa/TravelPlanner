@@ -55,3 +55,9 @@ def buscar_por_id(db: Session, plano_id: int):
 def deletar(db: Session, plano: PlanoViagem):
         db.delete(plano)
         db.commit()
+
+def atualizar_status(db: Session, plano: PlanoViagem, status_concluido: bool):
+        plano.concluido = status_concluido
+        db.commit()
+        db.refresh(plano)
+        return plano

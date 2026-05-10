@@ -55,3 +55,15 @@ class PlanoService:
 
         PlanoRepository.deletar(db, plano)
         return True, None
+    
+    @staticmethod
+    def atualizar_status_seguro(db: Session, plano_id: int, usuario_id: int, status_concluido: bool):
+        plano = PlanoRepository.buscar_por_id(db, plano_id)
+        
+        if not plano:
+            return None, "nao_encontrado"
+        if plano.usuario_id != usuario_id:
+            return None, "acesso_negado"
+
+        plano_atualizado = PlanoRepository.atualizar_status(db, plano, status_concluido)
+        return plano_atualizado, None

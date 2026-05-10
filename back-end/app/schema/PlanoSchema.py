@@ -7,6 +7,7 @@ class PlanoViagemResponse(BaseModel):
     nome_viagem: str
     descricao: Optional[str] = None
     imagem_url: Optional[str] = None
+    concluido: bool
 
     class Config:
         from_attributes = True
@@ -42,3 +43,6 @@ class CriarViagemRequest(BaseModel):
     tipo_hospedagem: str
     periodo_dia: str
     imagem_url: Optional[str] = None
+
+class PlanoViagemStatusUpdate(BaseModel):
+    concluido: bool
