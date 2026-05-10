@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from app.database import get_db
 from app.security import obter_usuario_atual
-from app.schema.PlanoSchema import PlanoViagemResponse, CriarViagemRequest
+from app.schema.PlanoSchema import PlanoViagemResponse, CriarViagemRequest, PlanoViagemDetalhadoResponse
 from app.controller.PlanoController import PlanoController
 
 router = APIRouter(prefix="/viagens", tags=["Viagens"])
@@ -22,3 +22,11 @@ def gerar_viagem_completa(
     db: Session = Depends(get_db)
 ):
     return PlanoController.processar_nova_viagem(request, usuario_id, db)
+
+@router.get("/minhas-viagens/{plano_id}", response_model=PlanoViagemDetalhadoResponse)
+def get_detalhes_viagem(
+    plano_id: int,
+    usuario_id: int = Depends(obter_usuario_atual),
+    db: Session = Depends(get_db)
+):
+    return PlanoController.obter_detalhes(db, plano_id, usuario_id)

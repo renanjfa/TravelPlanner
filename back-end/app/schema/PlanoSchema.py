@@ -5,12 +5,21 @@ from typing import Optional
 class PlanoViagemResponse(BaseModel):
     id: int
     nome_viagem: str
-    data_inicio: Optional[date] = None
-    data_fim: Optional[date] = None
     descricao: Optional[str] = None
-    plano_detalhado: str
-    concluido: bool
     imagem_url: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+class PlanoViagemDetalhadoResponse(BaseModel):
+    id: int
+    nome_viagem: str
+    data_inicio: Optional[date]
+    data_fim: Optional[date]
+    descricao: Optional[str]
+    plano_detalhado: str # O roteiro completo
+    imagem_url: Optional[str]
+    concluido: bool
 
     class Config:
         from_attributes = True

@@ -46,3 +46,7 @@ def salvar_destino(db: Session, plano_viagem_id: int, pais: str, cidade: str):
 @staticmethod
 def listar_por_usuario(db: Session, usuario_id: int):
     return db.query(PlanoViagem).filter(PlanoViagem.usuario_id == usuario_id).all()
+
+@staticmethod
+def buscar_por_id(db: Session, plano_id: int):
+        return db.query(PlanoViagem).filter(PlanoViagem.id == plano_id).first()
