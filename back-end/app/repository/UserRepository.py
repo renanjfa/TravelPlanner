@@ -26,3 +26,13 @@ class UserRepository:
     @staticmethod
     def buscar_por_id(db: Session, usuario_id: int):
         return db.query(models.User).filter(models.User.id == usuario_id).first()
+    
+    @staticmethod
+    def atualizar_usuario(db: Session, usuario_id: int, dados_para_atualizar: dict):
+        usuario_db = db.query(models.User).filter(models.User.id == usuario_id)
+        
+        if usuario_db.first():
+            usuario_db.update(dados_para_atualizar)
+            db.commit()
+            return usuario_db.first()
+        return None

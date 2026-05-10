@@ -28,3 +28,9 @@ class UsuarioResponse(BaseModel):
 
     class Config:
         from_attributes = True
+    
+class UsuarioUpdate(BaseModel):
+    nome: Optional[str] = None
+    sobrenome: Optional[str] = None
+    email: Optional[EmailStr] = None
+    senha: Optional[str] = None
