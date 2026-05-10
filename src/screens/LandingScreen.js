@@ -10,7 +10,7 @@ import {
 export default function LandingScreen() {
     return (
         <ImageBackground 
-            source={require('../../assets/images/photo_background.png')} 
+            source={require('../assets/photo_background.png')} 
             style={styles.background}
             resizeMode="cover"
             imageStyle={{ justifyContent: 'flex-end', alignItems: 'center' }}
