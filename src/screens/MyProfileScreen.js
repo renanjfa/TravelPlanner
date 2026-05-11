@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 
 import Header from '../components/Header';
 import MenuUser from '../components/MenuUser';
-import MinhasViagens from '../components/MinhasViagens';
+import ProfileInfo from '../components/ProfileInfo';
 import UserCard from '../components/UserCard';
 
 
@@ -26,7 +26,8 @@ class MyProfileScreen extends Component {
                         <MenuUser/>
                     </View>
 
-                    <MinhasViagens/>
+                    {/* Profile Information */}
+                    <ProfileInfo/>
 
                 </View>
 

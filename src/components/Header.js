@@ -13,7 +13,7 @@ class Header extends Component {
         </Text>
 
         <TouchableOpacity style={styles.userButton}>
-          <Text style={styles.username}>Renan Jusan</Text>
+          <Text style={styles.username}>Sair</Text>
         </TouchableOpacity>
 
       </View>
