@@ -4,6 +4,7 @@ from app.schema.UserSchema import UsuarioCreate
 from app.service.AuthService import AuthService
 from app.schema import UserSchema
 from app.security import criar_token_acesso
+from app.repository.UserRepository import UserRepository
 
 class AuthController:
     @staticmethod
@@ -19,8 +20,11 @@ class AuthController:
             )
         
     def login(usuario_credenciais: UserSchema.UsuarioLogin, db: Session):
+
+        usuario_db = UserRepository.buscar_por_email(db, usuario_credenciais.email)
+
         usuario = AuthService.autenticar_usuario(
-            db, 
+            db,
             email=usuario_credenciais.email, 
             senha_plana=usuario_credenciais.senha
         )
@@ -32,6 +36,6 @@ class AuthController:
                 headers={"WWW-Authenticate": "Bearer"},
             )
             
-        token_acesso = criar_token_acesso(data={"sub": usuario.email})
+        token_acesso = criar_token_acesso(data={"sub": str(usuario_db.id)})
         
         return {"access_token": token_acesso, "token_type": "bearer"}
