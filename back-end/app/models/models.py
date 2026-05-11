@@ -45,8 +45,8 @@ class PlanoViagem(Base):
     descricao = Column(Text)
     plano_detalhado = Column(Text)
     concluido = Column(Boolean, default=False)
+    imagem_url = Column(String(255), nullable=True)
 
-    # Relacionamentos
     usuario = relationship("User", back_populates="planos")
     formulario = relationship("Formulario", back_populates="plano")
     destinos = relationship("Destino", back_populates="plano_viagem", cascade="all, delete-orphan")
@@ -59,5 +59,4 @@ class Destino(Base):
     pais = Column(String(100))
     cidade = Column(String(100))
 
-    # Relacionamento
     plano_viagem = relationship("PlanoViagem", back_populates="destinos")

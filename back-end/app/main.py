@@ -1,7 +1,7 @@
 # app/main.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.router import AuthRouter
+from app.router import AuthRouter, PlanoRouter, UserRouter
 
 app = FastAPI(
     title="Travel Planner API",
@@ -10,6 +10,8 @@ app = FastAPI(
 )
 
 app.include_router(AuthRouter.router)
+app.include_router(PlanoRouter.router)
+app.include_router(UserRouter.router)
 
 app.add_middleware(
     CORSMiddleware,
