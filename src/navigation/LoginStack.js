@@ -1,9 +1,9 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Component } from 'react';
 
-import LandPage from './screens/LandingScreen';
-import Login from './screens/LoginScreen';
-import Cadastro from './screens/RegisterScreen';
+import LandingScreen from './screens/LandingScreen';
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,17 +16,17 @@ class LoginStack extends Component {
             
                 <Stack.Screen
                     name="LandPage"
-                    component={LandPage}
+                    component={LandingScreen}
                 />
 
                 <Stack.Screen
                     name="Login"
-                    component={Login}
+                    component={LoginScreen}
                 />
 
                 <Stack.Screen
                     name="Cadastro"
-                    component={Cadastro}
+                    component={RegisterScreen}
                 />
 
             </Stack.Navigator>

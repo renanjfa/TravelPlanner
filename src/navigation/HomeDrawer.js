@@ -1,8 +1,7 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-import ViagemStack from './ViagemStack';
-import Perfil from './src/screens/MyProfileScreen';
-import MinhasViagens from './src/screens/MyTripsScreen';
+import MyProfileScreen from './src/screens/MyProfileScreen';
+import MyTripsScreen from './src/screens/MyTripsScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -14,22 +13,12 @@ class HomeDrawer extends Component {
 
                 <Drawer.Screen
                     name="Minhas Viagens"
-                    component={MinhasViagens}
+                    component={MyProfileScreen}
                 />
 
                 <Drawer.Screen
-                    name="Perfil"
-                    component={Perfil}
-                />
-
-                <Drawer.Screen
-                    name="Viagem"
-                    component={ViagemStack}
-                    options={{
-                    drawerItemStyle: {
-                        display: 'none'
-                    }
-                    }}
+                    name="Meu Perfil"
+                    component={MyTripsScreen}
                 />
 
             </Drawer.Navigator>
