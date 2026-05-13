@@ -1,31 +1,24 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-import MyProfileScreen from './src/screens/MyProfileScreen';
-import MyTripsScreen from './src/screens/MyTripsScreen';
+import MyProfileScreen from '../screens/MyProfileScreen';
+import MyTripsScreen from '../screens/MyTripsScreen';
 
 const Drawer = createDrawerNavigator();
 
-class HomeDrawer extends Component {
-
-    render() {
-        return(
-            <Drawer.Navigator>
-
-                <Drawer.Screen
-                    name="Minhas Viagens"
-                    component={MyProfileScreen}
-                />
+export default function HomeDrawer() {
+    return (
+        <Drawer.Navigator>
 
                 <Drawer.Screen
                     name="Meu Perfil"
+                    component={MyProfileScreen}
+                />
+                <Drawer.Screen
+                    name="Minhas Viagens"
                     component={MyTripsScreen}
                 />
 
             </Drawer.Navigator>
-
-
-        );
-    }
-
+  );
 }
 

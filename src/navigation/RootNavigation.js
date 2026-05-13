@@ -5,17 +5,14 @@ import LoginStack from './LoginStack';
 
 export default function RootNavigation() {
 
-    const usuarioLogado = false;
+    //const usuarioLogado = false;
 
     return (
 
         <NavigationContainer>
 
-            {
-                usuarioLogado
-                ? <HomeDrawer />
-                : <LoginStack />
-            }
+            <LoginStack />
+            
 
         </NavigationContainer>
     );

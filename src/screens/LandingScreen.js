@@ -7,7 +7,7 @@ import {
     View
 } from 'react-native';
 
-export default function LandingScreen() {
+export default function LandingScreen({navigation}) {
     return (
         <ImageBackground 
             source={require('../assets/photo_background.png')} 
@@ -27,7 +27,7 @@ export default function LandingScreen() {
                     <View style={styles.fraseContainer}>
                         <Text style={styles.fraseText}>A vida é uma jornada, não um destino.</Text>
                     </View>
-                    <TouchableOpacity style={styles.entryButton}>
+                    <TouchableOpacity style={styles.entryButton} onPress={() => navigation.navigate('Login')}>
                         <Text style={styles.buttonText}>Entrar</Text>
                     </TouchableOpacity>
                 </View>
