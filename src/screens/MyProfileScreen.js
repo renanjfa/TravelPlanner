@@ -10,12 +10,16 @@ import UserCard from '../components/UserCard';
 
 class MyProfileScreen extends Component {
 
+    navigationAction = () => {
+        this.props.navigation.navigate('Login');
+    }
+
     render() {
         return (
 
             <View style={styles.container}>
 
-                <Header/>
+                <Header navigation={this.props.navigation} navigationAction={this.navigationAction}/>
 
                 {/* CONTEÚDO */}
                 <View style={styles.content}>
@@ -23,7 +27,7 @@ class MyProfileScreen extends Component {
                     {/* SIDEBAR */}
                     <View style={styles.sidebar}>
                         <UserCard/>
-                        <MenuUser/>
+                        <MenuUser navigation={this.props.navigation}/>
                     </View>
 
                     {/* Profile Information */}

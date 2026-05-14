@@ -10,12 +10,12 @@ class MenuUser extends Component {
 
             <View style={styles.menu}>
 
-                <TouchableOpacity style={styles.menuItem}>
+                <TouchableOpacity style={styles.menuItem} onPress={() => this.props.navigation.navigate('Meu Perfil')}>
                     <MaterialIcons name="person" size={24} color="black" />
                     <Text>Meu Perfil</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.menuItem}>
+                <TouchableOpacity style={styles.menuItem} onPress={() => this.props.navigation.navigate('Minhas Viagens')}>
                     <MaterialIcons name="flight" size={24} color="black" />
                     <Text>Minhas Viagens</Text>
                 </TouchableOpacity>
