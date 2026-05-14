@@ -5,7 +5,8 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
-    View
+    View,
+    Alert
 } from 'react-native';
 
 import Input from '../components/InputLogin'
@@ -41,21 +42,38 @@ export default class RegisterScreen extends Component{
         this.setState({ inputConfirmaSenha: confirmaSenha });
     }
     
-    fazerCadastro = () => {
+    fazerCadastro = async () => {
 
         const { inputNome, inputSobrenome, inputEmail, inputSenha, inputConfirmaSenha } = this.state; 
 
-        if (!inputNome || ! inputSobrenome || !inputEmail || !inputSenha || !inputConfirmaSenha) {
-            alert('Por favor, preencha todos os campos.');
-            return;
-        }
-
-        if (inputSenha !== inputConfirmaSenha){
-            alert('As senhas não são iguais!');
-            return;
-        }
-
-        // Faz o cadastro
+        try {
+                const resposta = await fetch('http://localhost:8000/auth/cadastro', {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ nome: inputNome, sobrenome: inputSobrenome, email: inputEmail,
+                            senha: inputSenha }),
+                });
+        
+                if (resposta.status === 401) { 
+                    Alert.alert("Erro", "Dados preenchidos incorretamente!");
+                    return;
+                }
+        
+                const dados = await resposta.json();
+        
+                if (resposta.ok) {
+                    Alert.alert("Sucesso", "Bem-vindo!");
+                    this.props.navigation.navigate('Login');
+                } else {
+                    Alert.alert("Erro", "Algo deu errado no servidor.");
+                }
+        
+                } catch (erro) {
+                console.error(erro);
+                Alert.alert("Erro", "Não foi possível conectar ao servidor.");
+                }
         
     }
 
