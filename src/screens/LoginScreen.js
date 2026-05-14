@@ -5,11 +5,13 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
-    View
+    View,
+    Alert
 } from 'react-native';
 
 import Input from '../components/InputLogin'
 import HeaderLogin from '../components/HeaderLogin'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class LoginScreen extends Component{
 
@@ -26,16 +28,40 @@ export default class LoginScreen extends Component{
         this.setState({ inputSenha: senha });
     }
 
-    fazerLogin = () => {
-        const { inputEmail, inputSenha } = this.state; 
+    fazerLogin = async () => {
+        const { inputEmail, inputSenha } = this.state;
+        try {
+        const resposta = await fetch('http://localhost:8000/auth/login', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: inputEmail,
+                    senha: inputSenha }),
+        });
 
-        if (!inputEmail || ! inputSenha) {
-            alert('Por favor, preencha o email e a senha.');
+        if (resposta.status === 401) { 
+            Alert.alert("Erro", "E-mail ou senha incorretos.");
             return;
         }
 
-        this.props.navigation.navigate('HomeDrawer');
-    }
+        const dados = await resposta.json();
+
+        console.log(dados);
+
+        if (resposta.ok) {
+            Alert.alert("Sucesso", "Bem-vindo!");
+            await AsyncStorage.setItem('@meu_app_token', dados.access_token);
+            this.props.navigation.navigate('HomeDrawer');
+        } else {
+            Alert.alert("Erro", "Algo deu errado no servidor.");
+        }
+
+        } catch (erro) {
+        console.error(erro);
+        Alert.alert("Erro", "Não foi possível conectar ao servidor.");
+        }
+    };
 
     fazerCadastro = () => {
         this.props.navigation.navigate('Cadastro');
