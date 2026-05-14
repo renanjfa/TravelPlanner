@@ -1,42 +1,24 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-import ViagemStack from './ViagemStack';
-import Perfil from './src/screens/MyProfileScreen';
-import MinhasViagens from './src/screens/MyTripsScreen';
+import MyProfileScreen from '../screens/MyProfileScreen';
+import MyTripsScreen from '../screens/MyTripsScreen';
 
 const Drawer = createDrawerNavigator();
 
-class HomeDrawer extends Component {
+export default function HomeDrawer() {
+    return (
+        <Drawer.Navigator>
 
-    render() {
-        return(
-            <Drawer.Navigator>
-
+                <Drawer.Screen
+                    name="Meu Perfil"
+                    component={MyProfileScreen}
+                />
                 <Drawer.Screen
                     name="Minhas Viagens"
-                    component={MinhasViagens}
-                />
-
-                <Drawer.Screen
-                    name="Perfil"
-                    component={Perfil}
-                />
-
-                <Drawer.Screen
-                    name="Viagem"
-                    component={ViagemStack}
-                    options={{
-                    drawerItemStyle: {
-                        display: 'none'
-                    }
-                    }}
+                    component={MyTripsScreen}
                 />
 
             </Drawer.Navigator>
-
-
-        );
-    }
-
+  );
 }
 

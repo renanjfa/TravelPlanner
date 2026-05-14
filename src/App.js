@@ -1,20 +1,5 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { Component } from 'react';
-import RootNavigator from './navigation/RootNavigator';
+import RootNavigation from './navigation/RootNavigation';
 
-
-export default class App extends Component {
-
-    render() {
-
-        return (
-
-            <NavigationContainer>
-                <RootNavigator />
-            </NavigationContainer>
-
-        );
-
-    }
-    
+export default function App() {
+    return <RootNavigation />;
 }
