@@ -39,17 +39,20 @@ export default class LoginScreen extends Component{
                     senha: inputSenha }),
         });
 
-        console.log(resposta.status == 401);
+        if (resposta.status === 401) { 
+            Alert.alert("Erro", "E-mail ou senha incorretos.");
+            return;
+        }
 
         const dados = await resposta.json();
 
-        if (resposta.status == 401) { 
-            Alert.alert("E-mail ou senha incorretos.");
-            return;
+        if (resposta.ok) {
+            Alert.alert("Sucesso", "Bem-vindo!");
+            this.props.navigation.navigate('HomeDrawer');
         } else {
-            Alert.alert("Sucesso")
-            this.props.navigation.navigate('MyTrips');
+            Alert.alert("Erro", "Algo deu errado no servidor.");
         }
+
         } catch (erro) {
         console.error(erro);
         Alert.alert("Erro", "Não foi possível conectar ao servidor.");
