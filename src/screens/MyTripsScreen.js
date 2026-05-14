@@ -26,7 +26,7 @@ class MyTripsScreen extends Component {
                         <MenuUser/>
                     </View>
 
-                    <MinhasViagens/>
+                    <MinhasViagens navigation={this.props.navigation}/>
 
                 </View>
 
