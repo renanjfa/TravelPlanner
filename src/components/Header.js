@@ -12,7 +12,9 @@ class Header extends Component {
           TravelPlanner
         </Text>
 
-        <TouchableOpacity style={styles.userButton}>
+        {/* // this.props.navigation.goBack() */}
+
+        <TouchableOpacity style={styles.userButton} onPress={() => this.props.navigationAction()}>
           <Text style={styles.username}>Sair</Text>
         </TouchableOpacity>
 

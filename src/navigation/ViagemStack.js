@@ -9,7 +9,7 @@ export default function MyTripsStack() {
 
     return (
 
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
 
             <Stack.Screen
                 name="MyTrips"
@@ -21,6 +21,7 @@ export default function MyTripsStack() {
                 component={FormsScreen}
             />
 
+        
         </Stack.Navigator>
     );
 }

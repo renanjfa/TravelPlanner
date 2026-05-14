@@ -15,7 +15,7 @@ class MinhasViagens extends Component {
             
             
                 {/* BOTÃO */}
-                <TouchableOpacity style={styles.newTripButton}>
+                <TouchableOpacity style={styles.newTripButton} onPress={() => this.props.navigation.navigate('Forms')}>
                     <Text style={styles.newTripText}>+ Nova Viagem</Text>
                 </TouchableOpacity>
 

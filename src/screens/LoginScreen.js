@@ -34,9 +34,6 @@ export default class LoginScreen extends Component{
             return;
         }
 
-        // Verificação de email e senha
-
-        // navigation
         this.props.navigation.navigate('HomeDrawer');
     }
 

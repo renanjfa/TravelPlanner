@@ -1,31 +1,39 @@
 import { StyleSheet, View } from "react-native";
+import { Component } from "react";
 
 import FormsNovaViagem from "../components/FormsNovaViagem";
 import FormsQuestionario from "../components/FormsQuestionario";
 import Header from "../components/Header";
 
-const FormsScreen = () => {
+class FormsScreen extends Component {
 
-    return(
+    
+    navigationAction = () => {
+        this.props.navigation.goBack();
+    }
 
-        <View style={styles.container}>
+    render() {
 
-            <Header/>
-
-            <View style={styles.divisao}>
-
-                <FormsNovaViagem/>
-
-                <View style={styles.line} />
-
-                <FormsQuestionario/>
-
+        return(
+    
+            <View style={styles.container}>
+    
+                <Header navigation={this.props.navigation} navigationAction={this.navigationAction}/>
+    
+                <View style={styles.divisao}>
+    
+                    <FormsNovaViagem/>
+    
+                    <View style={styles.line} />
+    
+                    <FormsQuestionario/>
+    
+                </View>
+    
             </View>
-
-        </View>
-
-    );
-
+    
+        );
+    }
 }
 export default FormsScreen;
 
