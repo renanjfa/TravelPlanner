@@ -10,12 +10,16 @@ import UserCard from '../components/UserCard';
 
 class MyTripsScreen extends Component {
 
+    navigationAction = () => {
+        this.props.navigation.navigate('Login');
+    }
+
     render() {
         return (
 
             <View style={styles.container}>
 
-                <Header/>
+                <Header navigation={this.props.navigation} navigationAction={this.navigationAction}/>
 
                 {/* CONTEÚDO */}
                 <View style={styles.content}>
@@ -23,7 +27,7 @@ class MyTripsScreen extends Component {
                     {/* SIDEBAR */}
                     <View style={styles.sidebar}>
                         <UserCard/>
-                        <MenuUser/>
+                        <MenuUser navigation={this.props.navigation}/>
                     </View>
 
                     <MinhasViagens navigation={this.props.navigation}/>
