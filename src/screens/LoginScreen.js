@@ -11,6 +11,7 @@ import {
 
 import Input from '../components/InputLogin'
 import HeaderLogin from '../components/HeaderLogin'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class LoginScreen extends Component{
 
@@ -46,8 +47,11 @@ export default class LoginScreen extends Component{
 
         const dados = await resposta.json();
 
+        console.log(dados);
+
         if (resposta.ok) {
             Alert.alert("Sucesso", "Bem-vindo!");
+            await AsyncStorage.setItem('@meu_app_token', dados.access_token);
             this.props.navigation.navigate('HomeDrawer');
         } else {
             Alert.alert("Erro", "Algo deu errado no servidor.");
