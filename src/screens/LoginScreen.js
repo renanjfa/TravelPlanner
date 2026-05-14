@@ -5,7 +5,8 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
-    View
+    View,
+    Alert
 } from 'react-native';
 
 import Input from '../components/InputLogin'
@@ -26,19 +27,34 @@ export default class LoginScreen extends Component{
         this.setState({ inputSenha: senha });
     }
 
-    fazerLogin = () => {
-        const { inputEmail, inputSenha } = this.state; 
+    fazerLogin = async () => {
+        const { inputEmail, inputSenha } = this.state;
+        try {
+        const resposta = await fetch('http://localhost:8000/auth/login', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: inputEmail,
+                    senha: inputSenha }),
+        });
 
-        if (!inputEmail || ! inputSenha) {
-            alert('Por favor, preencha o email e a senha.');
+        console.log(resposta.status == 401);
+
+        const dados = await resposta.json();
+
+        if (resposta.status == 401) { 
+            Alert.alert("E-mail ou senha incorretos.");
             return;
+        } else {
+            Alert.alert("Sucesso")
+            this.props.navigation.navigate('MyTrips');
         }
-
-        // Verificação de email e senha
-
-        // navigation
-        this.props.navigation.navigate('HomeDrawer');
-    }
+        } catch (erro) {
+        console.error(erro);
+        Alert.alert("Erro", "Não foi possível conectar ao servidor.");
+        }
+    };
 
     fazerCadastro = () => {
         this.props.navigation.navigate('Cadastro');
