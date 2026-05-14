@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { Component } from "react";
 
 import FormsNovaViagem from "../components/FormsNovaViagem";
@@ -20,7 +20,7 @@ class FormsScreen extends Component {
     
                 <Header navigation={this.props.navigation} navigationAction={this.navigationAction}/>
     
-                <View style={styles.divisao}>
+                <ScrollView style={styles.divisao} horizontal={true}>
     
                     <FormsNovaViagem/>
     
@@ -28,7 +28,7 @@ class FormsScreen extends Component {
     
                     <FormsQuestionario/>
     
-                </View>
+                </ScrollView>
     
             </View>
     
@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#F5F5F5',
         flexDirection: 'column',
-        
     },
 
     divisao: {
