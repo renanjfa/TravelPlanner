@@ -1,5 +1,4 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
-
 import MyProfileScreen from '../screens/MyProfileScreen';
 import MyTripsStack from './ViagemStack';
 
