@@ -6,7 +6,6 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Alert
 } from 'react-native';
 
 import Input from '../components/InputLogin'
@@ -17,19 +16,23 @@ export default class LoginScreen extends Component{
 
     state = {
         inputEmail: '',
-        inputSenha: ''
+        inputSenha: '',
+        mensagemErro: ''
     }
 
     inputChangeEmail = (email) => {
-        this.setState({ inputEmail: email });
+        this.setState({ inputEmail: email, mensagemErro: '' });
     }
 
     inputChangeSenha = (senha) => {
-        this.setState({ inputSenha: senha });
+        this.setState({ inputSenha: senha, mensagemErro: '' });
     }
 
     fazerLogin = async () => {
         const { inputEmail, inputSenha } = this.state;
+
+        this.setState({ mensagemErro: '' })
+
         try {
         const resposta = await fetch('http://localhost:8000/auth/login', {
             method: 'POST',
@@ -41,7 +44,7 @@ export default class LoginScreen extends Component{
         });
 
         if (resposta.status === 401) { 
-            Alert.alert("Erro", "E-mail ou senha incorretos.");
+            this.setState({ mensagemErro: 'E-mail ou senha incorretos.' })
             return;
         }
 
@@ -50,16 +53,15 @@ export default class LoginScreen extends Component{
         console.log(dados);
 
         if (resposta.ok) {
-            Alert.alert("Sucesso", "Bem-vindo!");
             await AsyncStorage.setItem('@meu_app_token', dados.access_token);
             this.props.navigation.navigate('HomeDrawer');
         } else {
-            Alert.alert("Erro", "Algo deu errado no servidor.");
+            this.setState({ mensagemErro: 'Algo deu errado no servidor.' })
         }
 
         } catch (erro) {
         console.error(erro);
-        Alert.alert("Erro", "Não foi possível conectar ao servidor.");
+        this.setState({ mensagemErro: 'Não foi possível conectar ao servidor.' })
         }
     };
 
@@ -69,7 +71,7 @@ export default class LoginScreen extends Component{
   
 
     render () {
-        const { inputEmail, inputSenha } = this.state;
+        const { inputEmail, inputSenha, mensagemErro } = this.state;
 
         return (
             <View style={styles.container}>
@@ -110,6 +112,9 @@ export default class LoginScreen extends Component{
                                 />
                             </View>
                         </View>
+                        {mensagemErro !== '' && (
+                            <Text style={styles.errorText}>{mensagemErro}</Text>
+                        )}
                         <View style={styles.buttonCard}>
                             <TouchableOpacity onPress={this.fazerLogin} style={styles.loginButton}>
                                 <Text style={styles.buttonText}>Fazer Login</Text>
@@ -228,5 +233,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 20,
+    },
+
+    errorText: {
+        color: '#D32F2F',
+        fontSize: 13,
+        fontWeight: 'bold',
+        marginTop: -5,
+        marginBottom: 10,
+        textAlign: 'center',
     }
 });
