@@ -12,8 +12,8 @@ const FormsQuestionario = ({ dados, onChange, onSubmit }) => {
                     <Text>Descrição da Viagem:</Text>
                     <TextInput 
                         style={styles.textInput}
-                        value={dados.descricao}
-                        onChangeText={(texto) => onChange('descricao', texto)}
+                        value={dados.descricao_viagem}
+                        onChangeText={(texto) => onChange('descricao_viagem', texto)}
                     />
                 </View>
 

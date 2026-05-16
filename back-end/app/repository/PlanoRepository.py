@@ -10,6 +10,10 @@ def salvar_plano(
     formulario_id: int, 
     texto_ia: str
 ):
+    
+    print("--- DADOS QUE CHEGARAM DO FRONT ---")
+    print(f"Descrição que chegou: {request.descricao_viagem}")
+    print("-----------------------------------")
 
     novo_plano = PlanoViagem(
         usuario_id=usuario_id,

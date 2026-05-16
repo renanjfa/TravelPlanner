@@ -17,7 +17,7 @@ const FormsScreen = ({ navigation }) => {
         orcamento: "", 
         qtd_adultos: "",
         qtd_criancas: "",
-        descricao: "",
+        descricao_viagem: "",
         interesse: "",
         ritmo_viagem: "",
         prioridade: "",

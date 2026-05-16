@@ -8,7 +8,6 @@ import {
     View,
     Alert
 } from 'react-native';
-
 import Input from '../components/InputLogin'
 import HeaderLogin from '../components/HeaderLogin'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -66,7 +65,6 @@ export default class LoginScreen extends Component{
     fazerCadastro = () => {
         this.props.navigation.navigate('Cadastro');
     }
-  
 
     render () {
         const { inputEmail, inputSenha } = this.state;
