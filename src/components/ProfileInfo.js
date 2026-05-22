@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, Alert, ActivityIndicator } from "react-native";
-// IMPORTANTE: O import do AsyncStorage abaixo é obrigatório!
 import AsyncStorage from '@react-native-async-storage/async-storage'; 
 
 class ProfileInfo extends Component {
@@ -9,7 +8,7 @@ class ProfileInfo extends Component {
         sobrenome: '',
         email: '',
         senha: '',
-        loading: true // Para mostrar um carregando enquanto puxa os dados
+        loading: true
     }
 
     componentDidMount() {
@@ -76,7 +75,7 @@ class ProfileInfo extends Component {
                     nome,
                     sobrenome,
                     email,
-                    senha // Apenas se o usuário tiver digitado uma nova
+                    senha
                 }),
             });
 
@@ -95,7 +94,6 @@ class ProfileInfo extends Component {
     }
 
     render() {
-        // Se estiver carregando, mostra o spinner centralizado
         if (this.state.loading) {
             return (
                 <View style={styles.loadingContainer}>

@@ -62,5 +62,4 @@ class PlanoController:
         
         if erro == "acesso_negado":
             raise HTTPException(status_code=403, detail="Você não tem permissão para alterar esta viagem")
-            
         return plano
