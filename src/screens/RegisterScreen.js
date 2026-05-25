@@ -6,7 +6,6 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Alert
 } from 'react-native';
 
 import Input from '../components/InputLogin'
@@ -19,32 +18,45 @@ export default class RegisterScreen extends Component{
         inputSobrenome: '',
         inputEmail: '',
         inputSenha: '',
-        inputConfirmaSenha: ''
+        inputConfirmaSenha: '',
+        mensagemErro: ''
     }
 
     inputChangeNome = (nome) => {
-        this.setState({ inputNome: nome });
+        this.setState({ inputNome: nome, mensagemErro: '' });
     }
 
     inputChangeSobrenome = (sobrenome) => {
-        this.setState({ inputSobrenome: sobrenome });
+        this.setState({ inputSobrenome: sobrenome, mensagemErro: '' });
     }
 
     inputChangeEmail = (email) => {
-        this.setState({ inputEmail: email });
+        this.setState({ inputEmail: email, mensagemErro: '' });
     }
 
     inputChangeSenha = (senha) => {
-        this.setState({ inputSenha: senha });
+        this.setState({ inputSenha: senha, mensagemErro: '' });
     }
 
     inputChangeConfirmaSenha = (confirmaSenha) => {
-        this.setState({ inputConfirmaSenha: confirmaSenha });
+        this.setState({ inputConfirmaSenha: confirmaSenha, mensagemErro: '' });
     }
     
     fazerCadastro = async () => {
 
         const { inputNome, inputSobrenome, inputEmail, inputSenha, inputConfirmaSenha } = this.state; 
+
+        this.setState({ mensagemErro: '' });
+
+        if (!inputNome || !inputSobrenome || !inputEmail || !inputSenha || !inputConfirmaSenha) {
+            this.setState({ mensagemErro: 'Por favor, preencha todos os campos.' });
+            return; 
+        }
+
+        if (inputSenha !== inputConfirmaSenha){
+            this.setState({ mensagemErro: 'As senhas não coincidem!' });
+            return;
+        }
 
         try {
                 const resposta = await fetch('http://localhost:8000/auth/cadastro', {
@@ -57,22 +69,21 @@ export default class RegisterScreen extends Component{
                 });
         
                 if (resposta.status === 401) { 
-                    Alert.alert("Erro", "Dados preenchidos incorretamente!");
+                    this.setState({ mensagemErro: 'Dados preenchidos incorretamente!' })
                     return;
                 }
         
                 const dados = await resposta.json();
         
                 if (resposta.ok) {
-                    Alert.alert("Sucesso", "Bem-vindo!");
                     this.props.navigation.navigate('Login');
                 } else {
-                    Alert.alert("Erro", "Algo deu errado no servidor.");
+                    this.setState({ mensagemErro: 'Algo deu errado no servidor.' })
                 }
         
                 } catch (erro) {
                 console.error(erro);
-                Alert.alert("Erro", "Não foi possível conectar ao servidor.");
+                this.setState({ mensagemErro: 'Não foi possível conectar ao servidor.' })
                 }
         
     }
@@ -85,7 +96,7 @@ export default class RegisterScreen extends Component{
   
 
     render () {
-        const { inputNome, inputSobrenome, inputEmail, inputSenha, inputConfirmaSenha } = this.state;
+        const { inputNome, inputSobrenome, inputEmail, inputSenha, inputConfirmaSenha, mensagemErro } = this.state;
 
         return (
             <View style={styles.container}>
@@ -160,6 +171,9 @@ export default class RegisterScreen extends Component{
                                 />
                             </View>
                         </View>
+                        {mensagemErro !== '' && (
+                            <Text style={styles.errorText}>{mensagemErro}</Text>
+                        )}
                         <View style={styles.buttonCard}>
                             <TouchableOpacity onPress={this.fazerCadastro} style={styles.cadastroButton}>
                                 <Text style={styles.cadastroButtonText}>Fazer Cadastro</Text>
@@ -283,4 +297,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
 
+    errorText: {
+        color: '#D32F2F',
+        fontSize: 13,
+        fontWeight: 'bold',
+        marginTop: -5,
+        marginBottom: 10,
+        textAlign: 'center',
+    }
 });
