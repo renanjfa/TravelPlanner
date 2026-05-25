@@ -56,7 +56,12 @@ const MinhasViagens = ({ navigation }) => {
                     {
                         viagens.length > 0 ? (
                             viagens.map((viagem) => (
-                                <TripCard key={viagem.id} viagem={viagem} />
+                                <TouchableOpacity 
+                                    key={viagem.id} 
+                                    onPress={() => navigation.navigate('TripScreen', { id: viagem.id })}
+                                >
+                                    <TripCard key={viagem.id} viagem={viagem} />
+                                </TouchableOpacity>
                             ))
                         ) : (
                             <Text style={{ marginTop: 20 }}>Você ainda não tem planos de viagem criados.</Text>
