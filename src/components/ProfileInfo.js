@@ -142,6 +142,7 @@ class ProfileInfo extends Component {
                             value={this.state.senha}
                             onChangeText={(txt) => this.setState({ senha: txt })}
                             placeholder="Deixe em branco para manter"
+                            placeholderTextColor={'#ae9898'}
                         />
                     </View>
 

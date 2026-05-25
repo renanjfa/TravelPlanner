@@ -59,7 +59,7 @@ class UserCard extends Component {
             <View style={styles.profileCard}>
 
                 <Image
-                source={'https://img.magnific.com/vetores-premium/icone-de-perfil-de-avatar-padrao-imagem-de-usuario-de-midia-social-icone-de-avatar-cinza-silhueta-de-perfil-em-branco-ilustracao-vetorial_561158-3383.jpg?semt=ais_hybrid&w=740&q=80'}
+                source={'https://img.freepik.com/vector-premium/icono-perfil-avatar-estilo-plano-ilustracion-vector-perfil-usuario-masculino-sobre-fondo-aislado-concepto-negocio-signo-perfil-hombre_157943-38764.jpg'}
                 style={styles.avatar}
                 />
 
