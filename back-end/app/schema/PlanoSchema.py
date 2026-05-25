@@ -18,7 +18,7 @@ class PlanoViagemDetalhadoResponse(BaseModel):
     data_inicio: Optional[date]
     data_fim: Optional[date]
     descricao: Optional[str]
-    plano_detalhado: str # O roteiro completo
+    plano_detalhado: str
     imagem_url: Optional[str]
     concluido: bool
 
