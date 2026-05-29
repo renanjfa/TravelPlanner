@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { StyleSheet, Text, View, Alert, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'; 
 
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
@@ -19,22 +19,23 @@ class TripScreen extends Component {
     state = {
         titulo: '',
         descricao: 'Carregando os detalhes da sua viagem...', 
-        loading: true
+        loading: true,
+        mensagemErro: ''
     }
 
     componentDidMount() {
-        const { id } = this.props.route.params;
+        const id = this.props.route?.params?.id;
         this.buscarDadosDaViagem(id);
     }
     
     buscarDadosDaViagem = async (id) => {
+        this.setState({ mensagemErro: '' })
 
         try {
             const token = await AsyncStorage.getItem('@meu_app_token');
 
             if (!token) {
-                Alert.alert("Aviso", "Sessão não encontrada.");
-                this.setState({ loading: false, descricao: 'Sessão não encontrada.' });
+                this.setState({ loading: false, mensagemErro: 'Sessão não encontrada.' });
                 return;
             }
 
@@ -43,26 +44,24 @@ class TripScreen extends Component {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
-                }
+               }
             });
 
             const dados = await resposta.json();
 
-            if (resposta.ok) {
+             if (resposta.ok) {
                 this.setState({
                     titulo: dados.nome_viagem,
                     descricao: dados.plano_detalhado,
                     loading: false
                 });
             } else {
-                Alert.alert("Erro", "Não foi possível carregar a viagem.");
-                this.setState({ loading: false, descricao: 'Erro ao carregar roteiro.' });
+                this.setState({ loading: false, mensagemErro: 'Erro ao carregar roteiro.' });
             }
 
         } catch (erro) {
             console.error("Erro no GET da viagem:", erro);
-            Alert.alert("Erro", "Não foi possível conectar ao servidor.");
-            this.setState({ loading: false, descricao: 'Falha na conexão com o servidor.' });
+            this.setState({ loading: false, mensagemErro: 'Falha na conexão com o servidor.' });
         }
 
     }
@@ -72,7 +71,7 @@ class TripScreen extends Component {
     }
         
     render() {
-        const { descricao, titulo } = this.state;
+        const { descricao, titulo, mensagemErro } = this.state;
         const posicao = [-22.9068, -43.1729]; 
 
         // separa o roteiro por dias
@@ -117,7 +116,10 @@ class TripScreen extends Component {
 
                     <View style={styles.caixaTexto}>
                         <Text style={styles.tituloDetalhes}>Roteiro Detalhado:</Text>
-                        
+                        {mensagemErro !== '' && (
+                            <Text style={styles.errorText}>{mensagemErro}</Text>
+                        )}
+
                         <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 15 }}>
 
                             {blocosDias.map((bloco, index) => (
@@ -262,4 +264,13 @@ const styles = StyleSheet.create({
         width: '50%',
         height: '100%', 
     },
+
+    errorText: {
+        color: '#D32F2F',
+        fontSize: 15,
+        fontWeight: 'bold',
+        marginTop: 5,
+        marginBottom: 10,
+        textAlign: 'center',
+    }
 });
