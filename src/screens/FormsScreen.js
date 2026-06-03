@@ -1,4 +1,4 @@
-import { StyleSheet, View, Alert, ActivityIndicator, Text } from "react-native";
+import { StyleSheet, View, ScrollView, ActivityIndicator, Text } from "react-native";
 import React, { useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FormsNovaViagem from "../components/FormsNovaViagem";
@@ -7,6 +7,8 @@ import Header from "../components/Header";
 
 const FormsScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
+
+    const [mensagemErro, setMensagemErro] = useState('');
 
     const [viagemData, setViagemData] = useState({
         nome_viagem: "",
@@ -34,17 +36,19 @@ const FormsScreen = ({ navigation }) => {
     };
 
     const handleSubmit = async () => {
+        setMensagemErro('');
+
         try { 
             const token = await AsyncStorage.getItem('@meu_app_token');
 
             if (!token) {
-                Alert.alert("Erro de Autenticação", "Você precisa estar logado para criar uma viagem.");
+                setMensagemErro('Você precisa estar logado para criar uma viagem.')
                 navigation.navigate('Login');
                 return;
             }
 
             if (!viagemData.nome_viagem || !viagemData.data_inicio || !viagemData.data_fim) {
-                Alert.alert("Campos Obrigatórios", "Por favor, preencha o nome da viagem e as datas de ida e volta.");
+                setMensagemErro('Por favor, preencha o nome da viagem e as datas de ida e volta.')
                 return;
             }
 
@@ -81,7 +85,7 @@ const FormsScreen = ({ navigation }) => {
 
             if (resposta.status === 401) { 
                 setLoading(false);
-                Alert.alert("Sessão Expirada", "Sua sessão expirou. Por favor, faça login novamente.");
+                setMensagemErro('Sua sessão expirou. Por favor, faça login novamente.')
                 return;
             }
 
@@ -92,13 +96,13 @@ const FormsScreen = ({ navigation }) => {
             if (resposta.ok) {
                 navigation.navigate('MyTrips');
             } else {
-                Alert.alert("Erro", dados.detail || "Algo deu errado ao processar os dados.");
+                setMensagemErro('Algo deu errado ao processar os dados.')
             }
 
         } catch (erro) {
             setLoading(false);
             console.error("Erro no fetch:", erro);
-            Alert.alert("Erro de Conexão", "Não foi possível conectar ao servidor. Verifique se o backend está rodando.");
+            setMensagemErro('Algo deu errado ao processar os dados.')
         }
     };
 
@@ -117,20 +121,29 @@ const FormsScreen = ({ navigation }) => {
                 </View>
             )}
 
-            <View style={styles.divisao}>
-                <FormsNovaViagem 
-                    dados={viagemData} 
-                    onChange={handleInputChange} 
-                />
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
 
-                <View style={styles.line} />
+                <View style={styles.divisao}>
+                    <FormsNovaViagem 
+                        dados={viagemData} 
+                        onChange={handleInputChange} 
+                    />
 
-                <FormsQuestionario 
-                    dados={viagemData} 
-                    onChange={handleInputChange} 
-                    onSubmit={handleSubmit} 
-                />
-            </View>
+                    <View style={styles.line} />
+
+                    <View style={styles.questionario}>
+                        <FormsQuestionario 
+                            dados={viagemData} 
+                            onChange={handleInputChange} 
+                            onSubmit={handleSubmit} 
+                        />
+
+                        {mensagemErro !== '' && (
+                            <Text style={styles.errorText}>{mensagemErro}</Text>
+                        )}
+                    </View>
+                </View>
+            </ScrollView>
         </View>
     );
 }
@@ -171,5 +184,17 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: '500',
         color: '#003B8E'
+    },
+    questionario: {
+        flex: 1,
+        flexDirection: 'column'
+    },
+    errorText: {
+        color: '#D32F2F',
+        fontSize: 13,
+        fontWeight: 'bold',
+        marginTop: 10,
+        marginBottom: 10,
+        textAlign: 'left',  
     }
 });

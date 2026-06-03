@@ -8,7 +8,8 @@ class UserCard extends Component {
         nome: '',
         sobrenome: '',
         email: '',
-        senha: ''
+        senha: '',
+        mensagemErro: ''
     }
 
     componentDidMount() {
@@ -20,8 +21,7 @@ class UserCard extends Component {
             const token = await AsyncStorage.getItem('@meu_app_token');
 
             if (!token) {
-                Alert.alert("Aviso", "Sessão não encontrada.");
-                this.setState({ loading: false });
+                this.setState({ loading: false, mensagemErro: 'Sessão não encontrada.' });
                 return;
             }
 
@@ -43,18 +43,18 @@ class UserCard extends Component {
                     loading: false
                 });
             } else {
-                Alert.alert("Erro", "Não foi possível carregar o perfil.");
-                this.setState({ loading: false });
+                this.setState({ loading: false, mensagemErro: 'Não foi possível carregar o perfil.' });
             }
 
         } catch (erro) {
             console.error("Erro no GET do perfil:", erro);
-            Alert.alert("Erro", "Não foi possível conectar ao servidor.");
-            this.setState({ loading: false });
+            this.setState({ loading: false, mensagemErro: 'Não foi possível conectar ao servidor.' });
         }
     }
 
     render() {
+        const { nome, mensagemErro } = this.state;
+        
         return(
             <View style={styles.profileCard}>
 
@@ -66,6 +66,9 @@ class UserCard extends Component {
                 <View>
                     <Text>{this.state.nome}</Text>
                     <Text style={styles.travelPlannerUserText}>Travel Planner User</Text>
+                    {mensagemErro !== '' && (
+                        <Text style={styles.errorText}>{mensagemErro}</Text>
+                    )}
                 </View>
 
             </View>
@@ -104,6 +107,14 @@ const styles = StyleSheet.create({
 
     travelPlannerUserText: {
         fontSize: 10,
-        color: '#ae9898'
+        color: '#ae9898',
+    },
+
+    errorText: {
+        color: '#D32F2F',
+        fontSize: 10,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        textAlign: 'center',
     }
 });

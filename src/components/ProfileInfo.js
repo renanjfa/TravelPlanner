@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, Alert, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, ActivityIndicator, ScrollView } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage'; 
 
 class ProfileInfo extends Component {
@@ -8,7 +8,10 @@ class ProfileInfo extends Component {
         sobrenome: '',
         email: '',
         senha: '',
-        loading: true
+        confirmaSenha: '',
+        loading: true,
+        mensagemErro: '',
+        mensagemSucesso: ''
     }
 
     componentDidMount() {
@@ -20,8 +23,7 @@ class ProfileInfo extends Component {
             const token = await AsyncStorage.getItem('@meu_app_token');
 
             if (!token) {
-                Alert.alert("Aviso", "Sessão não encontrada.");
-                this.setState({ loading: false });
+                this.setState({ mensagemErro: "Sessão não encontrada.", loading: false})
                 return;
             }
 
@@ -43,25 +45,37 @@ class ProfileInfo extends Component {
                     loading: false
                 });
             } else {
-                Alert.alert("Erro", "Não foi possível carregar o perfil.");
-                this.setState({ loading: false });
+                this.setState({ mensagemErro: "Não foi possível carregar o perfil", loading: false });
             }
 
         } catch (erro) {
-            console.error("Erro no GET do perfil:", erro);
-            Alert.alert("Erro", "Não foi possível conectar ao servidor.");
-            this.setState({ loading: false });
+            this.setState({ mensagemErro: "Não foi possível conectar ao servidor.", loading: false });
         }
     }
 
     salvarAlteracoes = async () => {
-        const { nome, sobrenome, email, senha } = this.state;
+        const { nome, sobrenome, email, senha, confirmaSenha } = this.state;
+
+        if (senha !== confirmaSenha) {
+            this.setState({ mensagemErro: "As senhas não coincidem!", mensagemSucesso: '' });
+            return; 
+        }
+
+        const dadosParaEnviar = {
+            nome,
+            sobrenome,
+            email
+        };
+
+        if (senha.trim() !== '') {
+            dadosParaEnviar.senha = senha;
+        }
 
         try {
             const token = await AsyncStorage.getItem('@meu_app_token');
 
             if (!token) {
-                Alert.alert("Erro", "Você não está autenticado.");
+                this.setState({ mensagemErro: "Você não está autenticado.", mensagemSucesso: '' });
                 return;
             }
 
@@ -71,25 +85,19 @@ class ProfileInfo extends Component {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    nome,
-                    sobrenome,
-                    email,
-                    senha
-                }),
+                body: JSON.stringify(dadosParaEnviar),
             });
 
             if (resposta.ok) {
-                Alert.alert("Sucesso", "Seu perfil foi atualizado!");
-                this.setState({ senha: '' });
+                this.setState({ mensagemSucesso: "Seu perfil foi atualizado!", mensagemErro: '' });
+                this.setState({ senha: '', confirmaSenha: '' });
             } else {
                 const erroApi = await resposta.json();
-                Alert.alert("Erro", erroApi.mensagem || "Falha ao atualizar perfil.");
+                this.setState({ mensagemErro: erroApi.mensagem || "Falha ao atualizar perfil.", mensagemSucesso: '' });
             }
 
         } catch (erro) {
-            console.error("Erro no PUT do perfil:", erro);
-            Alert.alert("Erro", "Problema ao tentar comunicar com o servidor.");
+            this.setState({ mensagemErro: "Problema ao tentar comunicar com o servidor.", mensagemSucesso: '' });
         }
     }
 
@@ -102,28 +110,11 @@ class ProfileInfo extends Component {
             );
         }
 
+        const { mensagemErro, mensagemSucesso } = this.state
+
         return (
             <View style={styles.mainContent}>
                 <Text style={styles.title}>Meu Perfil</Text>
-            
-                <View style={styles.profileTextInputs}>
-                    <View style={styles.gapTextInput}>
-                        <Text>Nome:</Text>
-                        <TextInput 
-                            style={styles.input} 
-                            value={this.state.nome}
-                            onChangeText={(txt) => this.setState({ nome: txt })}
-                        />
-                    </View>
-
-                    <View style={styles.gapTextInput}>
-                        <Text>Sobrenome:</Text>
-                        <TextInput 
-                            style={styles.input} 
-                            value={this.state.sobrenome}
-                            onChangeText={(txt) => this.setState({ sobrenome: txt })}
-                        />
-                    </View>
 
                     <View style={styles.gapTextInput}>
                         <Text>Email:</Text>
@@ -145,23 +136,14 @@ class ProfileInfo extends Component {
                             placeholderTextColor={'#ae9898'}
                         />
                     </View>
-
-                    <TouchableOpacity 
-                        style={styles.submitButton} 
-                        onPress={this.salvarAlteracoes}
-                    >
-                        <Text style={styles.submitButtonText}>Salvar Alterações</Text>
-                    </TouchableOpacity>
-                </View>
+                </ScrollView>
             </View>
         );
     }
 }
 
-// IMPORTANTE: Exportar o componente para o React Navigation achar
 export default ProfileInfo;
 
-// IMPORTANTE: Estilos no final
 const styles = StyleSheet.create({
     loadingContainer: {
         flex: 1,
@@ -183,11 +165,11 @@ const styles = StyleSheet.create({
         gap: 18
     },
     input: {
-        height: 40, // Aumentei um pouco para ficar melhor de clicar
+        height: 40,
         width: 250,
         padding: 10,
         borderWidth: 1,
-        borderColor: '#ccc', // Fica melhor com uma cor de borda definida
+        borderColor: '#ccc',
         borderRadius: 5,
     },
     submitButton: {
@@ -196,6 +178,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#003B8E',
         borderRadius: 6,
         marginTop: 10,
+        marginBottom: 40,
     },
     submitButtonText: {
         color: '#dfd813',
@@ -203,5 +186,15 @@ const styles = StyleSheet.create({
     },
     gapTextInput: {
         gap: 5
+    },
+    erroText: {
+        color: 'red',
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    sucessoText: {
+        color: 'green',
+        fontWeight: 'bold',
+        marginBottom: 10,
     },
 });

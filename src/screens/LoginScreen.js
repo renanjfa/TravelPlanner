@@ -32,6 +32,11 @@ export default class LoginScreen extends Component{
 
         this.setState({ mensagemErro: '' })
 
+        if (!inputEmail || !inputSenha) {
+            this.setState({ mensagemErro: 'Por favor, preencha todos os campos.' });
+            return; 
+        }
+
         try {
         const resposta = await fetch('http://191.52.73.134:8000/auth/login', {
             method: 'POST',
