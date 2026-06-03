@@ -19,7 +19,7 @@ export default function MyTripsStack() {
 
             <Stack.Screen
                 name="TripScreen"
-                component={TripsScreen}
+                component={TripScreen}
             />
 
             <Stack.Screen
