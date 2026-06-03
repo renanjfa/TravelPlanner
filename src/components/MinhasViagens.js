@@ -4,7 +4,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import TripCard from './TripCard';
 
-const MinhasViagens = ({ navigation }) => {
+import { useNavigation } from '@react-navigation/native';
+
+const MinhasViagens = () => {
+    const navigation = useNavigation();
 
     const [mensagemErro, setMensagemErro] = useState('');
     const [viagens, setViagens] = useState([]);
@@ -62,7 +65,9 @@ const MinhasViagens = ({ navigation }) => {
                             viagens.map((viagem) => (
                                 <TouchableOpacity 
                                     key={viagem.id} 
-                                    onPress={() => navigation.navigate('TripScreen', { id: viagem.id })}
+                                    onPress={() => {
+                                        navigation.navigate('TripScreen', { id: viagem.id });
+                                    }}
                                 >
                                     <TripCard key={viagem.id} viagem={viagem} />
                                 </TouchableOpacity>

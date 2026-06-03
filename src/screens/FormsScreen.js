@@ -24,7 +24,8 @@ const FormsScreen = ({ navigation }) => {
         ritmo_viagem: "",
         prioridade: "",
         tipo_hospedagem: "",
-        periodo_dia: ""
+        periodo_dia: "",
+        imagem: ""
     });
 
     const handleInputChange = (campo, valor) => {
@@ -48,6 +49,17 @@ const FormsScreen = ({ navigation }) => {
 
             if (!viagemData.nome_viagem || !viagemData.data_inicio || !viagemData.data_fim) {
                 setMensagemErro('Por favor, preencha o nome da viagem e as datas de ida e volta.')
+                return;
+            }
+
+            const dataInicio = new Date(viagemData.data_inicio.replace(/\//g, '-'));
+            const dataFim = new Date(viagemData.data_fim.replace(/\//g, '-'));
+
+            if (dataInicio >= dataFim) {
+                Alert.alert(
+                    "Datas inválidas",
+                    "A data de ida deve ser menor que a data de volta."
+                );
                 return;
             }
 

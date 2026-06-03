@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 
 const TripCard = ({ viagem }) => {
     return (
-        <TouchableOpacity style={styles.card}>
+        <View style={styles.card}>
             <Image 
                 source={{ uri: viagem.imagem_url || 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=300&auto=format&fit=crop' }} 
                 style={styles.image} 
@@ -25,7 +25,7 @@ const TripCard = ({ viagem }) => {
 
             </View>
 
-        </TouchableOpacity>
+        </View>
     );
 };
 

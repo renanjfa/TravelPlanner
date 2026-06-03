@@ -39,7 +39,7 @@ class TripScreen extends Component {
                 return;
             }
 
-            const resposta = await fetch(`http://localhost:8000/viagens/${id}`, {
+            const resposta = await fetch(`http://localhost:8000/viagens/minhas-viagens/${id}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
