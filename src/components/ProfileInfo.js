@@ -30,7 +30,7 @@ class ProfileInfo extends Component {
             const resposta = await fetch('http://localhost:8000/usuarios/meu-perfil', {
                 method: 'GET',
                 headers: {
-                    'Authorization': Bearer ${token},
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });
@@ -82,7 +82,7 @@ class ProfileInfo extends Component {
             const resposta = await fetch('http://localhost:8000/usuarios/atualizar-perfil', {
                 method: 'PUT', 
                 headers: {
-                    'Authorization': Bearer ${token},
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(dadosParaEnviar),
