@@ -116,66 +116,25 @@ class ProfileInfo extends Component {
             <View style={styles.mainContent}>
                 <Text style={styles.title}>Meu Perfil</Text>
 
-                {mensagemErro ? <Text style={styles.erroText}>{mensagemErro}</Text> : null}
-                {mensagemSucesso ? <Text style={styles.sucessoText}>{mensagemSucesso}</Text> : null}
-            
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={styles.profileTextInputs}>
-                        <View style={styles.gapTextInput}>
-                            <Text>Nome:</Text>
-                            <TextInput 
-                                style={styles.input} 
-                                value={this.state.nome}
-                                onChangeText={(txt) => this.setState({ nome: txt, mensagemErro: '', mensagemSucesso: '' })}
-                            />
-                        </View>
+                    <View style={styles.gapTextInput}>
+                        <Text>Email:</Text>
+                        <TextInput 
+                            style={styles.input} 
+                            value={this.state.email}
+                            onChangeText={(txt) => this.setState({ email: txt })}
+                        />
+                    </View>
 
-                        <View style={styles.gapTextInput}>
-                            <Text>Sobrenome:</Text>
-                            <TextInput 
-                                style={styles.input} 
-                                value={this.state.sobrenome}
-                                onChangeText={(txt) => this.setState({ sobrenome: txt, mensagemErro: '', mensagemSucesso: '' })}
-                            />
-                        </View>
-
-                        <View style={styles.gapTextInput}>
-                            <Text>Email:</Text>
-                            <TextInput 
-                                style={styles.input} 
-                                value={this.state.email}
-                                onChangeText={(txt) => this.setState({ email: txt, mensagemErro: '', mensagemSucesso: '' })}
-                            />
-                        </View>
-
-                        <View style={styles.gapTextInput}>
-                            <Text>Senha (Nova):</Text>
-                            <TextInput 
-                                style={styles.input} 
-                                secureTextEntry={true}
-                                value={this.state.senha}
-                                onChangeText={(txt) => this.setState({ senha: txt, mensagemErro: '', mensagemSucesso: '' })}
-                                placeholder="Deixe em branco para manter"
-                            />
-                        </View>
-
-                        <View style={styles.gapTextInput}>
-                            <Text>Confirme Nova Senha (Nova):</Text>
-                            <TextInput 
-                                style={styles.input} 
-                                secureTextEntry={true}
-                                value={this.state.confirmaSenha}
-                                onChangeText={(txt) => this.setState({ confirmaSenha: txt, mensagemErro: '', mensagemSucesso: '' })}
-                                placeholder="Deixe em branco para manter"
-                            />
-                        </View>
-
-                        <TouchableOpacity 
-                            style={styles.submitButton} 
-                            onPress={this.salvarAlteracoes}
-                        >
-                            <Text style={styles.submitButtonText}>Salvar Alterações</Text>
-                        </TouchableOpacity>
+                    <View style={styles.gapTextInput}>
+                        <Text>Senha (Nova):</Text>
+                        <TextInput 
+                            style={styles.input} 
+                            secureTextEntry={true}
+                            value={this.state.senha}
+                            onChangeText={(txt) => this.setState({ senha: txt })}
+                            placeholder="Deixe em branco para manter"
+                            placeholderTextColor={'#ae9898'}
+                        />
                     </View>
                 </ScrollView>
             </View>

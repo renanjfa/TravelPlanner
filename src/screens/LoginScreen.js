@@ -38,7 +38,7 @@ export default class LoginScreen extends Component{
         }
 
         try {
-        const resposta = await fetch('http://localhost:8000/auth/login', {
+        const resposta = await fetch('http://191.52.73.134:8000/auth/login', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Alert } from 'react-native';
 import DatePicker from 'react-native-modern-datepicker';
 
 const FormsNovaViagem = ({ dados, onChange }) => {
@@ -40,6 +40,15 @@ const FormsNovaViagem = ({ dados, onChange }) => {
                             placeholderTextColor={'#ae9898'}
                             value={dados.cidade}
                             onChangeText={(texto) => onChange('cidade', texto)}
+                        />
+                    </View>
+
+                    <View style={styles.gapTextInput}>
+                        <Text>Imagem (URL):</Text>
+                        <TextInput 
+                            style={styles.textInput}
+                            value={dados.imagem}
+                            onChangeText={(texto) => onChange('imagem', texto)}
                         />
                     </View>
 
@@ -90,7 +99,7 @@ const FormsNovaViagem = ({ dados, onChange }) => {
                         />
                     </View>
 
-                    <View style={styles.gapTextInput}>
+                    <View style={{marginBottom: 73}}>
                         <Text>Quantidade Crianças:</Text>
                         <TextInput 
                             style={styles.textInput} 
