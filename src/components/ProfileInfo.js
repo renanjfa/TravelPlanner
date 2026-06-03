@@ -136,7 +136,6 @@ class ProfileInfo extends Component {
                             placeholderTextColor={'#ae9898'}
                         />
                     </View>
-                </ScrollView>
             </View>
         );
     }
