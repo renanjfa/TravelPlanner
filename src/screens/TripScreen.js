@@ -63,8 +63,8 @@ class TripScreen extends Component {
                 const dadosViagem = JSON.parse(dados.plano_detalhado)
 
                 this.setState({
-                    titulo: dados.nome_viagem,
-                    viagem: dadosDaViagem, 
+                    titulo: dadosViagem.nome_viagem,
+                    viagem: dadosViagem,
                     loading: false
                 });
             } else {

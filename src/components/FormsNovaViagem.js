@@ -47,8 +47,8 @@ const FormsNovaViagem = ({ dados, onChange }) => {
                         <Text>Imagem (URL):</Text>
                         <TextInput 
                             style={styles.textInput}
-                            value={dados.imagem}
-                            onChangeText={(texto) => onChange('imagem', texto)}
+                            value={dados.imagem_url}
+                            onChangeText={(texto) => onChange('imagem_url', texto)}
                         />
                     </View>
 
