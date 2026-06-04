@@ -18,14 +18,15 @@ export default function MyTripsStack() {
             />
 
             <Stack.Screen
-                name="TripScreen"
-                component={TripsScreen}
-            />
-
-            <Stack.Screen
                 name="Forms"
                 component={FormsScreen}
             />
+            
+            <Stack.Screen
+                name="TripScreen"
+                component={TripScreen}
+            />
+
 
         
         </Stack.Navigator>

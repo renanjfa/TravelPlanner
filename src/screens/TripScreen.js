@@ -5,6 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
+//import viagemTeste from "../data/viagemTeste";
+
 import L from 'leaflet';
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -18,12 +20,20 @@ class TripScreen extends Component {
 
     state = {
         titulo: '',
-        descricao: 'Carregando os detalhes da sua viagem...', 
+        viagem: null,
         loading: true,
-        mensagemErro: ''
+        mensagemErro: '',
+        diaSelecionado: 1
     }
 
     componentDidMount() {
+
+        // this.setState({
+        //     titulo: viagemTeste.nome_viagem,
+        //     viagem: viagemTeste,
+        //     loading: false
+        // });
+
         const id = this.props.route?.params?.id;
         this.buscarDadosDaViagem(id);
     }
@@ -39,7 +49,7 @@ class TripScreen extends Component {
                 return;
             }
 
-            const resposta = await fetch(`http://localhost:8000/viagens/${id}`, {
+            const resposta = await fetch(`http://localhost:8000/viagens/minhas-viagens/${id}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -50,9 +60,11 @@ class TripScreen extends Component {
             const dados = await resposta.json();
 
              if (resposta.ok) {
+                const dadosViagem = JSON.parse(dados.plano_detalhado)
+
                 this.setState({
                     titulo: dados.nome_viagem,
-                    descricao: dados.plano_detalhado,
+                    viagem: dadosDaViagem, 
                     loading: false
                 });
             } else {
@@ -71,27 +83,28 @@ class TripScreen extends Component {
     }
         
     render() {
-        const { descricao, titulo, mensagemErro } = this.state;
-        const posicao = [-22.9068, -43.1729]; 
+        const { titulo, viagem, loading, mensagemErro } = this.state;
 
-        // separa o roteiro por dias
-        const linhas = descricao.split('\n');
-        const blocosDias = [];
-        let blocoAtual = null;
+        if (loading) {
+            return (
+                <View style={styles.container}>
+                    <Text style={{ textAlign: 'center', marginTop: 50 }}>Carregando roteiro...</Text>
+                </View>
+            );
+        }
 
-        linhas.forEach(linha => {
-            const linhaLimpa = linha.trim();
-            if (!linhaLimpa) return;
+        const diaAtual = viagem?.dias.find(
+            d => d.dia === this.state.diaSelecionado
+        );
 
-            if (linhaLimpa.startsWith('Dia ')) {
-                if (blocoAtual) blocosDias.push(blocoAtual);
-                blocoAtual = { tituloDia: linhaLimpa, atividades: [] };
-            } else if (blocoAtual) {
-                blocoAtual.atividades.push(linhaLimpa);
-            }
-        });
+        const posicao = diaAtual
+            ? [
+                viagem.dias[0].atividades[0].coordenadas.latitude,
+                viagem.dias[0].atividades[0].coordenadas.longitude
+            ]
+            : [41.9009, 12.4795];
 
-        if (blocoAtual) blocosDias.push(blocoAtual);
+            
 
         return(
             <View style={styles.container}>
@@ -122,38 +135,79 @@ class TripScreen extends Component {
 
                         <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 15 }}>
 
-                            {blocosDias.map((bloco, index) => (
-                                <View key={index} style={styles.cardDia}>
-                                    
-                                    <Text style={styles.tituloDiaCard}>{bloco.tituloDia}</Text>
-                                    
-                                    {bloco.atividades.map((atividade, idx) => (
-                                        <Text key={idx} style={styles.textoViagem}>
-                                            {atividade}
-                                        </Text>
+                            {viagem?.dias.map((dia, index) => (
+                                <TouchableOpacity key={index} 
+                                    style={[
+                                        styles.cardDia,
+                                        this.state.diaSelecionado === dia.dia && {
+                                            borderColor: '#7B68EE',
+                                            borderWidth: 3
+                                        }
+                                    ]} 
+                                    onPress={() => this.setState({ diaSelecionado: dia.dia })}>
+
+                                    <Text style={styles.tituloDiaCard}>
+                                        Dia {dia.dia} - {dia.data}
+                                    </Text>
+
+                                    <Text style={styles.textoViagem}>
+                                        {dia.resumo_do_dia}
+                                    </Text>
+
+                                    {dia.atividades.map((atividade, idx) => (
+                                        <View key={idx} style={{ marginTop: 10 }}>
+
+                                            <Text style={{ fontWeight: 'bold' }}>
+                                                {atividade.periodo} - {atividade.titulo}
+                                            </Text>
+
+                                            <Text style={styles.textoViagem}>
+                                                {atividade.descricao}
+                                            </Text>
+
+                                            <Text style={styles.textoViagem}>
+                                                📍 {atividade.local}
+                                            </Text>
+
+                                            <Text style={styles.textoViagem}>
+                                                💰 {atividade.custo_estimado}
+                                            </Text>
+
+                                        </View>
                                     ))}
 
-                                </View>
+                                </TouchableOpacity>
                             ))}
                         </ScrollView>
                     </View>
 
                     <View style={styles.mapaContainer}>
-                        <MapContainer 
-                            center={posicao} 
-                            zoom={13} 
-                            scrollWheelZoom={false} 
+                        <MapContainer
+                            center={posicao}
+                            zoom={12}
                             style={{ height: "100%", width: "100%" }}
                         >
                             <TileLayer
-                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                attribution='&copy; OpenStreetMap contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             />
-                            <Marker position={posicao}>
-                                <Popup>
-                                    Seu destino!
-                                </Popup>
-                            </Marker>
+
+                            {diaAtual?.atividades.map((atividade, index) => (
+                                <Marker
+                                    key={index}
+                                    position={[
+                                        atividade.coordenadas.latitude,
+                                        atividade.coordenadas.longitude
+                                    ]}
+                                >
+                                    <Popup>
+                                        <strong>{atividade.titulo}</strong>
+                                        <br />
+                                        {atividade.local}
+                                    </Popup>
+                                </Marker>
+                            ))}
+
                         </MapContainer>
                     </View>
 
