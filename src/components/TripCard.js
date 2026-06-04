@@ -34,6 +34,7 @@ export default TripCard;
 const styles = StyleSheet.create({
     card: {
         width: 160,
+        height: 215,
         backgroundColor: '#FFFFFF',
         borderRadius: 12,
         overflow: 'hidden',
