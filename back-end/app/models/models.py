@@ -24,6 +24,8 @@ class Formulario(Base):
     qtd_adultos = Column(Integer, default=1)
     qtd_criancas = Column(Integer, default=0)
     descricao = Column(Text)
+    pais = Column(Text)
+    cidade = Column(Text)
     orcamento = Column(Numeric(10, 2))
     interesse = Column(String(100))
     ritmo_viagem = Column(String(50))

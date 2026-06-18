@@ -2,13 +2,29 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from app.service.PlanoService import PlanoService
 from app.schema.PlanoSchema import CriarViagemRequest
+from datetime import date
 
 class PlanoController:
     @staticmethod
     def buscar_minhas_viagens(db: Session, usuario_id: int):
         try:
             viagens = PlanoService.obter_minhas_viagens(db, usuario_id)
-            return viagens
+
+            if viagens:
+                for viagem in viagens:
+                    status_verificado = viagem.data_fim < date.today()
+                    
+                    PlanoService.atualizar_status_seguro(
+                        db=db, 
+                        plano_id=viagem.id,
+                        usuario_id=usuario_id, 
+                        status_concluido=status_verificado
+                    )
+
+            viagens_atualizadas = PlanoService.obter_minhas_viagens(db, usuario_id)
+
+            return viagens_atualizadas
+
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
