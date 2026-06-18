@@ -5,8 +5,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-//import viagemTeste from "../data/viagemTeste";
-
 import L from 'leaflet';
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -15,25 +13,18 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
-
 class TripScreen extends Component {
 
     state = {
         titulo: '',
         viagem: null,
         loading: true,
+        deletando: false,
         mensagemErro: '',
         diaSelecionado: 1
     }
 
     componentDidMount() {
-
-        // this.setState({
-        //     titulo: viagemTeste.nome_viagem,
-        //     viagem: viagemTeste,
-        //     loading: false
-        // });
-
         const id = this.props.route?.params?.id;
         this.buscarDadosDaViagem(id);
     }
@@ -75,7 +66,40 @@ class TripScreen extends Component {
             console.error("Erro no GET da viagem:", erro);
             this.setState({ loading: false, mensagemErro: 'Falha na conexão com o servidor.' });
         }
+    }
 
+    excluirViagem = async () => {
+        const id = this.props.route?.params?.id;
+        if (!id) return;
+
+        const confirmacao = window.confirm("Tem certeza que deseja excluir esta viagem? Esta ação não pode ser desfeita.");
+        if (!confirmacao) return;
+
+        this.setState({ deletando: true });
+
+        try {
+            const token = await AsyncStorage.getItem('@meu_app_token');
+            
+            const resposta = await fetch(`http://localhost:8000/viagens/minhas-viagens/deletar/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (resposta.ok) {
+                window.alert("Viagem excluída com sucesso.");
+                this.navigationAction();
+            } else {
+                window.alert("Não foi possível excluir a viagem.");
+                this.setState({ deletando: false });
+            }
+        } catch (erro) {
+            console.error("Erro ao excluir:", erro);
+            window.alert("Falha na conexão com o servidor.");
+            this.setState({ deletando: false });
+        }
     }
 
     navigationAction = () => {
@@ -83,7 +107,7 @@ class TripScreen extends Component {
     }
         
     render() {
-        const { titulo, viagem, loading, mensagemErro } = this.state;
+        const { titulo, viagem, loading, deletando, mensagemErro } = this.state;
 
         if (loading) {
             return (
@@ -104,8 +128,6 @@ class TripScreen extends Component {
             ]
             : [41.9009, 12.4795];
 
-            
-
         return(
             <View style={styles.container}>
 
@@ -120,9 +142,19 @@ class TripScreen extends Component {
                 </View>
 
                 <View style={styles.headerViagem}>  
-                        <Text style={styles.titulo}>
-                            {titulo}
+                    <Text style={styles.titulo}>
+                        {titulo} 
+                    </Text>
+
+                    <TouchableOpacity 
+                        style={styles.excluirButton} 
+                        onPress={this.excluirViagem}
+                        disabled={deletando}
+                    >
+                        <Text style={styles.buttonText}>
+                            {deletando ? "Excluindo..." : "Excluir Viagem"}
                         </Text>
+                    </TouchableOpacity>
                 </View>
 
                 <View style={styles.containerRoteiro}>
@@ -269,6 +301,13 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: 'bold',
         color: '#FFFFFF',
+    },
+
+    excluirButton: {
+        backgroundColor: '#D32F2F',
+        paddingHorizontal: 18,
+        paddingVertical: 8,
+        borderRadius: 12,
     },
 
     containerRoteiro: {
