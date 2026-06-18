@@ -22,13 +22,6 @@ class PlanoService:
             texto_ia=texto_roteiro_ia
         )
         
-        PlanoRepository.salvar_destino(
-            db=db, 
-            plano_viagem_id=plano_viagem.id, 
-            pais=request.pais, 
-            cidade=request.cidade
-        )
-        
         return plano_viagem
     
     @staticmethod

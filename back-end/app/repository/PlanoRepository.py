@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.models.models import PlanoViagem, Destino
+from app.models.models import PlanoViagem
 from app.schema.PlanoSchema import CriarViagemRequest
 
 
@@ -28,20 +28,6 @@ def salvar_plano(
     db.refresh(novo_plano)
     
     return novo_plano
-
-
-def salvar_destino(db: Session, plano_viagem_id: int, pais: str, cidade: str):
-    novo_destino = Destino(
-        plano_viagem_id=plano_viagem_id,
-        pais=pais,
-        cidade=cidade
-    )
-    
-    db.add(novo_destino)
-    db.commit()
-    db.refresh(novo_destino)
-    
-    return novo_destino
 
 @staticmethod
 def listar_por_usuario(db: Session, usuario_id: int):
