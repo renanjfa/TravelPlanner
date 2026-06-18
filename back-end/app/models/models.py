@@ -24,6 +24,8 @@ class Formulario(Base):
     qtd_adultos = Column(Integer, default=1)
     qtd_criancas = Column(Integer, default=0)
     descricao = Column(Text)
+    pais = Column(Text)
+    cidade = Column(Text)
     orcamento = Column(Numeric(10, 2))
     interesse = Column(String(100))
     ritmo_viagem = Column(String(50))
@@ -49,14 +51,3 @@ class PlanoViagem(Base):
 
     usuario = relationship("User", back_populates="planos")
     formulario = relationship("Formulario", back_populates="plano")
-    destinos = relationship("Destino", back_populates="plano_viagem", cascade="all, delete-orphan")
-
-class Destino(Base):
-    __tablename__ = "destinos_plano"
-
-    id = Column(Integer, primary_key=True, index=True)
-    plano_viagem_id = Column(Integer, ForeignKey("planos_viagem.id", ondelete="CASCADE"), nullable=False)
-    pais = Column(String(100))
-    cidade = Column(String(100))
-
-    plano_viagem = relationship("PlanoViagem", back_populates="destinos")

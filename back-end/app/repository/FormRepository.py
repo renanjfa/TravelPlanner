@@ -8,6 +8,8 @@ def salvar_formulario(db: Session, request: CriarViagemRequest) -> int:
         qtd_adultos=request.qtd_adultos,
         qtd_criancas=request.qtd_criancas,
         descricao=request.descricao_viagem,
+        pais=request.pais,
+        cidade=request.cidade,
         interesse=request.interesse,
         ritmo_viagem=request.ritmo_viagem,
         prioridade=request.prioridade,

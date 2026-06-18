@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import TripCard from './TripCard';
-
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 const MinhasViagens = () => {
     const navigation = useNavigation();
@@ -12,9 +10,11 @@ const MinhasViagens = () => {
     const [mensagemErro, setMensagemErro] = useState('');
     const [viagens, setViagens] = useState([]);
 
-    useEffect(() => {
-        buscarViagens();
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            buscarViagens();
+        }, [])
+    );
 
     const buscarViagens = async () => {
         try {

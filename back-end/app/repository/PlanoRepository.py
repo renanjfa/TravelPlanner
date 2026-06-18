@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.models.models import PlanoViagem, Destino
+from app.models.models import PlanoViagem
 from app.schema.PlanoSchema import CriarViagemRequest
 
 
@@ -29,20 +29,6 @@ def salvar_plano(
     
     return novo_plano
 
-
-def salvar_destino(db: Session, plano_viagem_id: int, pais: str, cidade: str):
-    novo_destino = Destino(
-        plano_viagem_id=plano_viagem_id,
-        pais=pais,
-        cidade=cidade
-    )
-    
-    db.add(novo_destino)
-    db.commit()
-    db.refresh(novo_destino)
-    
-    return novo_destino
-
 @staticmethod
 def listar_por_usuario(db: Session, usuario_id: int):
     return db.query(PlanoViagem).filter(PlanoViagem.usuario_id == usuario_id).all()
@@ -56,6 +42,7 @@ def deletar(db: Session, plano: PlanoViagem):
         db.delete(plano)
         db.commit()
 
+@staticmethod
 def atualizar_status(db: Session, plano: PlanoViagem, status_concluido: bool):
         plano.concluido = status_concluido
         db.commit()
