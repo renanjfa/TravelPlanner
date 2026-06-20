@@ -14,7 +14,7 @@ class PlanoController:
                 for viagem in viagens:
                     status_verificado = viagem.data_fim < date.today()
                     
-                    PlanoService.atualizar_status_seguro(
+                    PlanoService.atualizar_status(
                         db=db, 
                         plano_id=viagem.id,
                         usuario_id=usuario_id, 
@@ -47,7 +47,7 @@ class PlanoController:
     
     @staticmethod
     def obter_detalhes(db: Session, plano_id: int, usuario_id: int):
-        plano, erro = PlanoService.obter_detalhes_seguros(db, plano_id, usuario_id)
+        plano, erro = PlanoService.obter_detalhes(db, plano_id, usuario_id)
       
         if erro == "nao_encontrado":
             raise HTTPException(status_code=404, detail="Plano de viagem não encontrado")
@@ -59,7 +59,7 @@ class PlanoController:
     
     @staticmethod
     def excluir_viagem(db: Session, plano_id: int, usuario_id: int):
-        sucesso, erro = PlanoService.deletar_plano_seguro(db, plano_id, usuario_id)
+        sucesso, erro = PlanoService.deletar_plano(db, plano_id, usuario_id)
         
         if erro == "nao_encontrado":
             raise HTTPException(status_code=404, detail="Plano de viagem não encontrado")
@@ -71,7 +71,7 @@ class PlanoController:
     
     @staticmethod
     def alterar_status_viagem(db: Session, plano_id: int, usuario_id: int, status_concluido: bool):
-        plano, erro = PlanoService.atualizar_status_seguro(db, plano_id, usuario_id, status_concluido)
+        plano, erro = PlanoService.atualizar_status(db, plano_id, usuario_id, status_concluido)
         
         if erro == "nao_encontrado":
             raise HTTPException(status_code=404, detail="Plano de viagem não encontrado")

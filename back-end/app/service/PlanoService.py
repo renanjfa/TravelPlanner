@@ -25,7 +25,7 @@ class PlanoService:
         return plano_viagem
     
     @staticmethod
-    def obter_detalhes_seguros(db: Session, plano_id: int, usuario_id: int):
+    def obter_detalhes(db: Session, plano_id: int, usuario_id: int):
         plano = PlanoRepository.buscar_por_id(db, plano_id)
 
         if not plano:
@@ -37,7 +37,7 @@ class PlanoService:
         return plano, None
     
     @staticmethod
-    def deletar_plano_seguro(db: Session, plano_id: int, usuario_id: int):
+    def deletar_plano(db: Session, plano_id: int, usuario_id: int):
         plano = PlanoRepository.buscar_por_id(db, plano_id)
     
         if not plano:
@@ -50,7 +50,7 @@ class PlanoService:
         return True, None
     
     @staticmethod
-    def atualizar_status_seguro(db: Session, plano_id: int, usuario_id: int, status_concluido: bool):
+    def atualizar_status(db: Session, plano_id: int, usuario_id: int, status_concluido: bool):
         plano = PlanoRepository.buscar_por_id(db, plano_id)
         
         if not plano:
